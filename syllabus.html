@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pythonic EduTech - Syllabus Completion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --primary: #1e40af;
+      --accent: #537fe7;
+      --bg: #e2eafc;
+      --card: #fff;
+      --shadow: 0 4px 24px 0 rgba(30,64,175,0.12);
+      --success: #16a34a;
+      --error: #f87171;
+      --pending: #facc15;
+      --ongoing: #38bdf8;
+      --completed: #16a34a;
+      --ring-size: 90px;
+      --ring-size-mobile: 60px;
+    }
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    /* HEADER STYLES START */
+    .header {
+      width: 100vw;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7em 2em;
+      box-sizing: border-box;
+      min-height: 54px;
+      z-index: 100;
+      position: relative;
+      box-shadow: 0 6px 20px #1e40af18;
+    }
+    .header-spacer {
+      height: 70px;
+    }
+    @media (max-width: 700px) {
+      .header-spacer { height: 50px; }
+    }
+    .logo-mini {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      font-size: 1.19em;
+      font-weight: bold;
+      text-decoration: none;
+      color: #fff;
+    }
+    .logo-mini img {
+      height: 34px;
+      width: 34px;
+      object-fit: contain;
+      border-radius: 7px;
+      background: #fff;
+      padding: 3px;
+      box-shadow: 0 1px 6px #1e40af22;
+    }
+    .header-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 38px;
+      height: 38px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      z-index: 120;
+      position: relative;
+      margin-left: auto;
+      margin-right: 0.5em;
+    }
+    .header-hamburger span,
+    .header-hamburger span::before,
+    .header-hamburger span::after {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      border-radius: 2px;
+      position: absolute;
+      left: 0;
+      transition: all 0.32s cubic-bezier(.4,2,.6,1);
+      content: '';
+    }
+    .header-hamburger span {
+      position: relative;
+      margin-top: 0;
+      margin-bottom: 0;
+      background: none;
+      height: 3px;
+      width: 25px;
+    }
+    .header-hamburger span::before { top: -8px; }
+    .header-hamburger span::after  { top: 8px; }
+    .header-hamburger:not(.open) span { background: #fff; }
+    .header-hamburger:not(.open) span::before,
+    .header-hamburger:not(.open) span::after {
+      background: #fff;
+      left: 0;
+      width: 25px;
+    }
+    .header-hamburger.open span { background: transparent; }
+    .header-hamburger.open span::before {
+      transform: rotate(45deg) translateY(0px); top: 0;
+    }
+    .header-hamburger.open span::after {
+      transform: rotate(-45deg) translateY(0px); top: 0;
+    }
+    .header-nav {
+      display: flex;
+      gap: 1.3em;
+      align-items: center;
+      background: none;
+      position: static;
+      box-shadow: none;
+      flex-direction: row;
+      height: auto;
+      color: #fff;
+      min-width: 0;
+      width: auto;
+      padding: 0;
+      z-index: 111;
+    }
+    .header-nav-list {
+      display: flex;
+      flex-direction: row;
+      gap: 1.3em;
+      width: auto;
+      margin-top: 0;
+    }
+    .header-nav a, .header-nav button {
+      color: #fff;
+      background: none;
+      font-size: 1.01em;
+      font-weight: 500;
+      border: none;
+      outline: none;
+      padding: 8px 13px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.17s, color 0.14s;
+      box-shadow: none;
+      text-align: left;
+    }
+    .header-nav a.active, .header-nav a:hover, .header-nav button:focus, .header-nav button:hover {
+      background: #ffffff22;
+      color: #e2eafc;
+    }
+    @media (max-width: 700px) {
+      .header {
+        padding: 0.6em 0.7em;
+        min-height: 44px;
+      }
+      .header-spacer { height: 50px; }
+      .logo-mini img { height: 27px; width: 27px; border-radius: 5px; padding: 2px; }
+      .logo-mini { font-size: 1em; gap: 0.4em; }
+      .header-hamburger { display: flex; }
+      .header-nav {
+        display: block;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--card);
+        box-shadow: 0 4px 24px #1e40af22;
+        padding: 0;
+        z-index: 150;
+        color: var(--primary);
+      }
+      .header-nav-list {
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+        padding: 0.9em 0 0.9em 0;
+        width: 100%;
+        display: none;
+        border-radius: 0 0 12px 12px;
+        overflow: hidden;
+        background: var(--card);
+        box-shadow: 0 8px 24px #1e40af22;
+      }
+      .header-nav-list.open {
+        display: flex;
+        animation: dropdownShow 0.23s cubic-bezier(.4,2,.6,1);
+      }
+      @keyframes dropdownShow {
+        from { opacity: 0; transform: translateY(-10px);}
+        to { opacity: 1; transform: none;}
+      }
+      .header-nav a, .header-nav button {
+        color: var(--primary);
+        background: none;
+        font-size: 1.12em;
+        font-weight: 500;
+        padding: 13px 22px;
+        width: 100%;
+        border-radius: 0;
+      }
+      .header-nav a.active, .header-nav a:hover, .header-nav button:focus, .header-nav button:hover {
+        background: var(--bg);
+        color: var(--primary);
+      }
+    }
+    /* HEADER STYLES END */
+    .syllabus-container {
+      background: var(--card);
+      max-width: 440px;
+      width: 100%;
+      margin: 0 auto 2em auto;
+      padding: 2.2em 1.8em 2.1em 1.8em;
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2em;
+      animation: popIn 0.8s cubic-bezier(.25,1.7,.35,.8);
+      box-sizing: border-box;
+      transition: box-shadow 0.2s;
+      border: 2px solid #e3eafc;
+    }
+    .syllabus-container:hover {
+      box-shadow: 0 12px 36px #1e40af27;
+      border-color: var(--accent);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.97) translateY(40px); opacity: 0;}
+      100% { transform: scale(1) translateY(0); opacity: 1;}
+    }
+    h2 {
+      text-align: center;
+      color: var(--primary);
+      margin: 0 0 8px 0;
+      font-size: 2em;
+      letter-spacing: 0.02em;
+      font-weight: 700;
+      background: linear-gradient(90deg,var(--primary),var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .user-welcome {
+      text-align: center;
+      font-size: 1.1em;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 0.2em;
+    }
+    .syllabus-options {
+      display: flex;
+      gap: 1em;
+      margin: 1em 0 0.5em 0;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .syllabus-option-btn {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      padding: 14px 32px;
+      font-size: 1.09em;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 10px #1e40af1a;
+      transition: background 0.16s, box-shadow 0.12s, transform 0.14s;
+      outline: none;
+      border-bottom: 2.5px solid #537fe7;
+      letter-spacing: 0.02em;
+    }
+    .syllabus-option-btn.selected, .syllabus-option-btn:active {
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+      box-shadow: 0 6px 26px #537fe733;
+      border-bottom: 3.5px solid var(--primary);
+      transform: translateY(-2px) scale(1.04);
+    }
+    .syllabus-option-btn:hover:not(.selected) {
+      background: linear-gradient(90deg, #4666e3, #77a7ff);
+      box-shadow: 0 4px 18px #537fe711;
+      color: #f1f1ff;
+      transform: translateY(-1px) scale(1.03);
+    }
+    /* Progress ring */
+    .completion-ring {
+      margin: 22px 0 0 0;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      display: none;
+      width: 100%;
+      min-height: var(--ring-size);
+    }
+    .completion-ring.visible {
+      display: flex;
+    }
+    .progress-ring {
+      width: var(--ring-size);
+      height: var(--ring-size);
+      margin: 0 auto;
+      display: block;
+      position: relative;
+    }
+    .progress-ring svg {
+      width: var(--ring-size);
+      height: var(--ring-size);
+      display: block;
+      margin: 0 auto;
+    }
+    .progress-ring__circle-bg {
+      stroke: #e5e7eb;
+      stroke-width: 10;
+    }
+    .progress-ring__circle {
+      stroke: #f87171; /* initial color, will be set dynamically */
+      stroke-width: 10;
+      stroke-linecap: round;
+      transition: stroke-dasharray 0.6s, stroke 0.5s;
+    }
+    .progress-percent {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      font-size: 2.1em;
+      color: #fff; /* SOLID WHITE */
+      font-weight: bold;
+      letter-spacing: 0.02em;
+      width: 100%;
+      text-align: center;
+      pointer-events: none;
+      text-shadow: 0 1px 6px #1e40af33, 0 0px 6px #0002;
+    }
+    .syllabus-table-area {
+      width: 100%;
+      margin: 1.3em 0 0 0;
+      overflow-x: auto;
+      display: none;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px #537fe72b, 0 1.5px 6px #aecbfa1a;
+      background: var(--card);
+      padding: 0.5em 0 0.8em 0;
+      transition: box-shadow 0.18s;
+    }
+    .syllabus-table-area.visible {
+      display: block;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: transparent;
+      font-size: 1em;
+      margin: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: none;
+    }
+    th, td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    th {
+      background: linear-gradient(90deg, #e4eefe, #edf4ff 90%);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.08em;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    td.status-cell {
+      font-weight: bold;
+      border-radius: 7px;
+      text-align: center;
+      font-size: 1.01em;
+      min-width: 86px;
+      box-shadow: 0 1px 6px #1e40af11;
+    }
+    .status-pending { color: #b45309; background: #fef9c3; }
+    .status-ongoing { color: #0369a1; background: #e0f2fe;}
+    .status-completed { color: #15803d; background: #dcfce7;}
+    .syllabus-error {
+      color: var(--error);
+      margin: 1em 0;
+      text-align: center;
+      min-height: 1.5em;
+      font-size: 1.1em;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    /* Custom scrollbar for table */
+    .syllabus-table-area::-webkit-scrollbar {
+      height: 8px;
+      background: #f1f5fa;
+      border-radius: 7px;
+    }
+    .syllabus-table-area::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 7px;
+    }
+    /* Responsive for small screens */
+    @media (max-width: 600px) {
+      .syllabus-container { 
+        padding: 1.1em 0.4em 1.1em 0.4em; 
+        border-radius: 10px; 
+        max-width: 310px;
+        gap: 0.9em;
+      }
+      h2 { font-size: 1.2em; }
+      .progress-ring, .progress-ring svg { width: var(--ring-size-mobile); height: var(--ring-size-mobile); }
+      .progress-percent { font-size: 1.1em; }
+      .completion-ring { margin: 10px 0 0 0; min-height: var(--ring-size-mobile);}
+      .syllabus-option-btn {
+        padding: 10px 16px;
+        font-size: 1em;
+        border-radius: 8px;
+      }
+      .syllabus-table-area { border-radius: 8px; }
+      th, td { padding: 8px 5px; }
+      td.status-cell { min-width: 64px; }
+    }
+    @media (max-width: 370px) {
+      .syllabus-container { 
+        padding: 0.4em 0.1em 0.6em 0.1em; 
+        border-radius: 7px;
+        max-width: 200px;
+        gap: 0.5em;
+      }
+      h2 { font-size: 1em;}
+      .syllabus-option-btn { font-size: 0.89em; padding: 8px 8px;}
+      .progress-percent { font-size: 0.93em;}
+      td.status-cell { min-width: 44px; font-size: 0.93em;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a class="logo-mini" href="syllabus.html">
+      <img src="logo.png" alt="Logo" />
+      <span>Pythonic EduTech</span>
+    </a>
+    <button class="header-hamburger" id="headerHamburger" aria-label="Open navigation" aria-expanded="false">
+      <span></span>
+    </button>
+    <nav class="header-nav" id="headerNav">
+      <div class="header-nav-list" id="headerNavList">
+        <a href="syllabus.html" id="nav-syllabus">Syllabus</a>
+        <a href="fees.html" id="nav-fees">Fees</a>
+        <button onclick="logout()" type="button">Logout</button>
+      </div>
+    </nav>
+  </header>
+  <div class="header-spacer"></div>
+  <div class="syllabus-container">
+    <h2>Syllabus Completion</h2>
+    <div class="user-welcome" id="welcome"></div>
+    <div class="syllabus-options">
+      <button class="syllabus-option-btn" id="btn-python" onclick="selectSyllabus('python')">Python</button>
+      <button class="syllabus-option-btn" id="btn-sql" onclick="selectSyllabus('sql')">SQL</button>
+    </div>
+    <div class="completion-ring" id="completionRing" style="display:none;">
+      <div class="progress-ring" id="progressRing">
+        <svg viewBox="0 0 90 90">
+          <circle class="progress-ring__circle-bg" cx="45" cy="45" r="36"/>
+          <circle class="progress-ring__circle" cx="45" cy="45" r="36"/>
+        </svg>
+        <div class="progress-percent" id="progressPercent">0%</div>
+      </div>
+    </div>
+    <div class="syllabus-table-area" id="syllabusTableArea"></div>
+    <div class="syllabus-error" id="syllabusError"></div>
+  </div>
+<script>
+  // Header Hamburger Menu Logic
+  (function(){
+    const path = window.location.pathname;
+    if (path.endsWith('syllabus.html')) document.getElementById('nav-syllabus').classList.add('active');
+    if (path.endsWith('fees.html') || path.endsWith('dashboard.html')) document.getElementById('nav-fees').classList.add('active');
+    const hamburger = document.getElementById('headerHamburger');
+    const navList = document.getElementById('headerNavList');
+    function isMobile() { return window.innerWidth <= 700; }
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      navList.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+    function openMenu() {
+      hamburger.classList.add('open');
+      navList.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+    }
+    hamburger.addEventListener('click', function(e) {
+      if (!isMobile()) return;
+      if (navList.classList.contains('open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+      e.stopPropagation();
+    });
+    navList.querySelectorAll('a,button').forEach(el => {
+      el.addEventListener('click', function() {
+        if(isMobile()) closeMenu();
+      });
+    });
+    window.addEventListener('resize', function() {
+      if(isMobile()) {
+        navList.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      } else {
+        navList.classList.add('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    });
+    if(isMobile()) {
+      navList.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    } else {
+      navList.classList.add('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+  })();
+
+  function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+
+  const scriptURL = "https://script.google.com/macros/s/AKfycbzYIv7-ENfEuLLXxH6EKV-O95CmlnaPgchL_SCgTwqbIoo5pRoY6T0tmbgAmNxh8jt9/exec";
+  let currentSubject = null;
+  function checkLogin() {
+    const username = localStorage.getItem('username');
+    const fullname = localStorage.getItem('fullname');
+    if(!username) {
+      window.location.href = "login.html";
+      return;
+    }
+    document.getElementById('welcome').textContent = "Hello, " + (fullname || username);
+    currentSubject = null;
+    document.getElementById('completionRing').style.display = 'none';
+    document.getElementById('syllabusTableArea').classList.remove('visible');
+    document.getElementById('syllabusTableArea').innerHTML = "";
+    document.getElementById('syllabusError').textContent = '';
+    document.getElementById('btn-python').classList.remove('selected');
+    document.getElementById('btn-sql').classList.remove('selected');
+  }
+  function selectSyllabus(subject) {
+    if(subject !== currentSubject) {
+      currentSubject = subject;
+      document.getElementById('btn-python').classList.toggle('selected', subject === 'python');
+      document.getElementById('btn-sql').classList.toggle('selected', subject === 'sql');
+      const username = localStorage.getItem('username');
+      document.getElementById('completionRing').style.display = 'flex';
+      document.getElementById('syllabusTableArea').classList.add('visible');
+      fetchSyllabus(subject, username);
+    }
+  }
+
+  // Returns an interpolated color from red to green based on percent (0-100)
+  function percentToColor(percent) {
+    // Red:   #f87171 (rgb(248,113,113))
+    // Green: #16a34a (rgb(22,163,74))
+    // Linear interpolation
+    const r1=248,g1=113,b1=113, r2=22,g2=163,b2=74;
+    const r = Math.round(r1 + (r2-r1)*(percent/100));
+    const g = Math.round(g1 + (g2-g1)*(percent/100));
+    const b = Math.round(b1 + (b2-b1)*(percent/100));
+    return `rgb(${r},${g},${b})`;
+  }
+
+  function setProgress(percent) {
+    const circle = document.querySelector('.progress-ring__circle');
+    const radius = 36;
+    const circumference = 2 * Math.PI * radius;
+    circle.setAttribute('stroke-dasharray', circumference);
+    circle.setAttribute('stroke-dashoffset', circumference - percent / 100 * circumference);
+    // Set the progress color from red to green
+    circle.setAttribute('stroke', percentToColor(percent));
+    document.getElementById('progressPercent').textContent = percent + "%";
+  }
+  async function fetchSyllabus(subject, username) {
+    const errorDiv = document.getElementById('syllabusError');
+    errorDiv.textContent = '';
+    setProgress(0);
+    document.getElementById('syllabusTableArea').innerHTML = '<div style="text-align:center; color:#6b7280; padding:1em;">Loading...</div>';
+    try {
+      const params = new URLSearchParams({action: 'syllabus_table', subject, username});
+      let res = await fetch(scriptURL + '?' + params, {method: 'GET'});
+      let data = await res.json();
+      if(data.success && Array.isArray(data.syllabus)) {
+        setProgress(data.percentage || 0);
+        renderTable(data.syllabus);
+      } else {
+        document.getElementById('syllabusTableArea').innerHTML = '';
+        errorDiv.textContent = data.error || "Unable to fetch syllabus data.";
+      }
+    } catch (e) {
+      document.getElementById('syllabusTableArea').innerHTML = '';
+      errorDiv.textContent = "Network error!";
+    }
+  }
+  function renderTable(rows) {
+    if(!rows.length) {
+      document.getElementById('syllabusTableArea').innerHTML = '<div style="text-align:center; color:#6b7280; padding:1em;">No syllabus data found.</div>';
+      return;
+    }
+    let html = `<table>
+      <thead>
+        <tr><th>Topic</th><th>Status</th></tr>
+      </thead>
+      <tbody>`;
+    for (const row of rows) {
+      let statusClass = '';
+      let statusLabel = '';
+      switch((row.status||"").toLowerCase()) {
+        case 'pending': statusClass = 'status-pending'; statusLabel = 'Pending'; break;
+        case 'in progress': statusClass = 'status-ongoing'; statusLabel = 'In Progress'; break;
+        case 'ongoing': statusClass = 'status-ongoing'; statusLabel = 'Ongoing'; break;
+        case 'completed': statusClass = 'status-completed'; statusLabel = 'Completed'; break;
+        default: statusClass = ''; statusLabel = row.status || '';
+      }
+      html += `<tr>
+        <td>${row.topic || ""}</td>
+        <td class="status-cell ${statusClass}">${statusLabel}</td>
+      </tr>`;
+    }
+    html += `</tbody></table>`;
+    document.getElementById('syllabusTableArea').innerHTML = html;
+  }
+  window.onload = checkLogin;
+</script>
+</body>
+</html>
