@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Pythonic EduTech - Syllabus Completion</title>
+  <title>PythonicEduTech|Syllabus</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="logo.png" type="image/png">
   <style>
     :root {
       --primary: #1e40af;
@@ -44,12 +45,8 @@
       position: relative;
       box-shadow: 0 6px 20px #1e40af18;
     }
-    .header-spacer {
-      height: 70px;
-    }
-    @media (max-width: 700px) {
-      .header-spacer { height: 50px; }
-    }
+    .header-spacer { height: 70px; }
+    @media (max-width: 700px) { .header-spacer { height: 50px; } }
     .logo-mini {
       display: flex;
       align-items: center;
@@ -120,53 +117,18 @@
     .header-hamburger.open span::after {
       transform: rotate(-45deg) translateY(0px); top: 0;
     }
-    .header-nav {
-      display: flex;
-      gap: 1.3em;
-      align-items: center;
-      background: none;
-      position: static;
-      box-shadow: none;
-      flex-direction: row;
-      height: auto;
-      color: #fff;
-      min-width: 0;
-      width: auto;
-      padding: 0;
-      z-index: 111;
-    }
-    .header-nav-list {
-      display: flex;
-      flex-direction: row;
-      gap: 1.3em;
-      width: auto;
-      margin-top: 0;
-    }
+    .header-nav { display: flex; gap: 1.3em; align-items: center; }
+    .header-nav-list { display: flex; flex-direction: row; gap: 1.3em; }
     .header-nav a, .header-nav button {
-      color: #fff;
-      background: none;
-      font-size: 1.01em;
-      font-weight: 500;
-      border: none;
-      outline: none;
-      padding: 8px 13px;
-      border-radius: 6px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.17s, color 0.14s;
-      box-shadow: none;
-      text-align: left;
+      color: #fff; background: none; font-size: 1.01em; font-weight: 500;
+      border: none; outline: none; padding: 8px 13px; border-radius: 6px;
+      cursor: pointer; text-decoration: none; transition: background 0.17s, color 0.14s;
     }
     .header-nav a.active, .header-nav a:hover, .header-nav button:focus, .header-nav button:hover {
-      background: #ffffff22;
-      color: #e2eafc;
+      background: #ffffff22; color: #e2eafc;
     }
     @media (max-width: 700px) {
-      .header {
-        padding: 0.6em 0.7em;
-        min-height: 44px;
-      }
-      .header-spacer { height: 50px; }
+      .header { padding: 0.6em 0.7em; min-height: 44px; }
       .logo-mini img { height: 27px; width: 27px; border-radius: 5px; padding: 2px; }
       .logo-mini { font-size: 1em; gap: 0.4em; }
       .header-hamburger { display: flex; }
@@ -295,7 +257,6 @@
       color: #f1f1ff;
       transform: translateY(-1px) scale(1.03);
     }
-    /* Progress ring */
     .completion-ring {
       margin: 22px 0 0 0;
       display: flex;
@@ -306,9 +267,7 @@
       width: 100%;
       min-height: var(--ring-size);
     }
-    .completion-ring.visible {
-      display: flex;
-    }
+    .completion-ring.visible { display: flex; }
     .progress-ring {
       width: var(--ring-size);
       height: var(--ring-size);
@@ -337,8 +296,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -60%);
-      font-size: 2.1em;
-      color: #fff; /* SOLID WHITE */
+      font-size: 1.5em;
+      color: #fff;
       font-weight: bold;
       letter-spacing: 0.02em;
       width: 100%;
@@ -357,9 +316,7 @@
       padding: 0.5em 0 0.8em 0;
       transition: box-shadow 0.18s;
     }
-    .syllabus-table-area.visible {
-      display: block;
-    }
+    .syllabus-table-area.visible { display: block; }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -403,7 +360,6 @@
       font-weight: 500;
       letter-spacing: 0.01em;
     }
-    /* Custom scrollbar for table */
     .syllabus-table-area::-webkit-scrollbar {
       height: 8px;
       background: #f1f5fa;
@@ -413,7 +369,6 @@
       background: var(--accent);
       border-radius: 7px;
     }
-    /* Responsive for small screens */
     @media (max-width: 600px) {
       .syllabus-container { 
         padding: 1.1em 0.4em 1.1em 0.4em; 
@@ -423,7 +378,7 @@
       }
       h2 { font-size: 1.2em; }
       .progress-ring, .progress-ring svg { width: var(--ring-size-mobile); height: var(--ring-size-mobile); }
-      .progress-percent { font-size: 1.1em; }
+      .progress-percent { font-size: 1.0em; }
       .completion-ring { margin: 10px 0 0 0; min-height: var(--ring-size-mobile);}
       .syllabus-option-btn {
         padding: 10px 16px;
@@ -443,7 +398,7 @@
       }
       h2 { font-size: 1em;}
       .syllabus-option-btn { font-size: 0.89em; padding: 8px 8px;}
-      .progress-percent { font-size: 0.93em;}
+      .progress-percent { font-size: 0.90em;}
       td.status-cell { min-width: 44px; font-size: 0.93em;}
     }
   </style>
@@ -487,7 +442,7 @@
     <div class="syllabus-error" id="syllabusError"></div>
   </div>
 <script>
-  // Header Hamburger Menu Logic
+  // Hamburger Menu Logic for Mobile (styled & functional)
   (function(){
     const path = window.location.pathname;
     if (path.endsWith('syllabus.html')) document.getElementById('nav-syllabus').classList.add('active');
@@ -541,7 +496,7 @@
     }
   })();
 
-  function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+  function logout() { localStorage.clear(); window.location.href = 'index.html'; }
 
   const scriptURL = "https://script.google.com/macros/s/AKfycbzYIv7-ENfEuLLXxH6EKV-O95CmlnaPgchL_SCgTwqbIoo5pRoY6T0tmbgAmNxh8jt9/exec";
   let currentSubject = null;
@@ -549,7 +504,7 @@
     const username = localStorage.getItem('username');
     const fullname = localStorage.getItem('fullname');
     if(!username) {
-      window.location.href = "login.html";
+      window.location.href = "index.html";
       return;
     }
     document.getElementById('welcome').textContent = "Hello, " + (fullname || username);
@@ -572,26 +527,19 @@
       fetchSyllabus(subject, username);
     }
   }
-
-  // Returns an interpolated color from red to green based on percent (0-100)
   function percentToColor(percent) {
-    // Red:   #f87171 (rgb(248,113,113))
-    // Green: #16a34a (rgb(22,163,74))
-    // Linear interpolation
     const r1=248,g1=113,b1=113, r2=22,g2=163,b2=74;
     const r = Math.round(r1 + (r2-r1)*(percent/100));
     const g = Math.round(g1 + (g2-g1)*(percent/100));
     const b = Math.round(b1 + (b2-b1)*(percent/100));
     return `rgb(${r},${g},${b})`;
   }
-
   function setProgress(percent) {
     const circle = document.querySelector('.progress-ring__circle');
     const radius = 36;
     const circumference = 2 * Math.PI * radius;
     circle.setAttribute('stroke-dasharray', circumference);
     circle.setAttribute('stroke-dashoffset', circumference - percent / 100 * circumference);
-    // Set the progress color from red to green
     circle.setAttribute('stroke', percentToColor(percent));
     document.getElementById('progressPercent').textContent = percent + "%";
   }
