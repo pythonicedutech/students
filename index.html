@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>PythonicEduTech|Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Lock user zoom for all devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1">
   <link rel="icon" href="logo.png" type="image/png">
   <style>
     :root {
@@ -20,51 +21,66 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      background: var(--bg);
       font-family: 'Segoe UI', Arial, sans-serif;
+      overflow: hidden;
     }
     body {
       min-height: 100vh;
       min-width: 100vw;
+      height: 100vh;
+      width: 100vw;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      /* Set the background image, do not scroll, and fix position */
+      background: url('background.jpg') center center / cover no-repeat fixed;
+      background-color: var(--bg);
+      /* This ensures the background is fixed, always covers, and does not move/jump on refresh. */
+    }
+    .main-center-area {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      min-width: 0;
+      width: 100vw;
+      position: relative;
+      z-index: 1;
     }
     .main-container {
       background: var(--card);
-      padding: 2em 1.8em 1.7em 1.8em;
-      border-radius: 20px;
+      border-radius: 15px;
       box-shadow: var(--shadow);
+      padding: 1.2em 2em 1.3em 2em;
       width: 100%;
-      max-width: 410px;
+      max-width: 320px;
       min-width: 0;
-      margin: 32px auto 32px auto; /* Added space at top and bottom */
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 1.1em;
-      animation: popIn 0.8s cubic-bezier(.25,1.7,.35,.8);
+      gap: 0.65em;
       align-items: center;
       justify-content: center;
-      flex: 1 0 auto;
-    }
-    .header {
-      display: none;
+      animation: popIn 0.8s cubic-bezier(.25,1.7,.35,.8);
+      box-sizing: border-box;
     }
     .main-logo-container {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 0.7em;
-      margin-top: -0.2em;
+      margin-bottom: 0.2em;
+      margin-top: -0.1em;
     }
     .main-logo-container img {
-      max-width: 90px;
-      width: 23vw;
-      min-width: 45px;
+      max-width: 58px;
+      width: 17vw;
+      min-width: 32px;
       height: auto;
-      border-radius: 12px;
-      padding: 5px;
+      border-radius: 10px;
+      padding: 3px;
       display: block;
       background: transparent;
     }
@@ -75,18 +91,18 @@
     h2 { 
       text-align: center; 
       color: var(--primary); 
-      margin: 0 0 14px 0;
-      font-size: 2rem;
-      letter-spacing: 0.02em;
+      margin: 0 0 12px 0;
+      font-size: 1.15rem;
+      letter-spacing: 0.01em;
       font-weight: 600;
     }
     input[type="text"], input[type="password"] {
       width: 100%;
-      padding: 15px 16px;
-      margin: 10px 0 16px 0;
-      border: 1.2px solid #cfd8dc;
-      border-radius: 9px;
-      font-size: 1.1em;
+      padding: 9px 9px;
+      margin: 7px 0 10px 0;
+      border: 1px solid #cfd8dc;
+      border-radius: 7px;
+      font-size: 0.97em;
       background: #f8fafc;
       transition: border-color 0.2s, box-shadow 0.15s;
       outline: none;
@@ -96,22 +112,22 @@
     input[type="text"]:focus, input[type="password"]:focus {
       border-color: var(--primary);
       background: #f0f7ff;
-      box-shadow: 0 0 7px #537fe733;
+      box-shadow: 0 0 5px #537fe733;
     }
     button {
       width: 100%;
-      padding: 15px 0;
+      padding: 10px 0;
       background: linear-gradient(90deg, var(--primary), var(--accent));
       color: white;
       border: none;
-      border-radius: 9px;
-      font-size: 1.15em;
+      border-radius: 7px;
+      font-size: 1em;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.18s, box-shadow 0.18s;
-      margin-top: 4px;
-      box-shadow: 0 2px 12px #1e40af22;
-      letter-spacing: 0.03em;
+      margin-top: 2px;
+      box-shadow: 0 2px 8px #1e40af22;
+      letter-spacing: 0.02em;
     }
     button:hover, button:focus {
       background: linear-gradient(90deg, #23398c, #5c5cd6);
@@ -120,10 +136,10 @@
     .error {
       color: var(--error);
       text-align: center;
-      font-size: 1em;
+      font-size: 0.97em;
       min-height: 1.2em;
-      margin-top: -12px;
-      margin-bottom: 4px;
+      margin-top: -8px;
+      margin-bottom: 2px;
       letter-spacing: 0.01em;
     }
     /* Loader styles */
@@ -137,150 +153,136 @@
       justify-content: center;
     }
     .loader-img {
-      width: 68px;
-      height: 68px;
+      width: 44px;
+      height: 44px;
       object-fit: contain;
-      border-radius: 10px;
-      box-shadow: 0 2px 16px #1e40af25;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px #1e40af25;
     }
     /* Footer styles */
     .footer {
       width: 100vw;
       background: var(--card);
-      border-top: 1.5px solid #dbeafe;
-      box-shadow: 0 -2px 16px #1e40af0a;
-      padding: 1.1em 0 1em 0;
+      border-top: 1.2px solid #dbeafe;
+      box-shadow: 0 -2px 12px #1e40af0a;
+      padding: 0.7em 0 0.6em 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 1em;
+      font-size: 0.93em;
       flex-shrink: 0;
+      min-height: 46px;
+      margin-top: 2.7vh;
+      position: relative;
+      z-index: 2;
     }
     .footer-logo-row {
       display: flex;
       align-items: center;
-      gap: 0.8em;
-      margin-bottom: 0.6em;
+      gap: 0.6em;
+      margin-bottom: 0.2em;
     }
     .footer-logo-row img {
-      width: 34px;
-      height: 34px;
-      border-radius: 6px;
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
       background: #fff;
       box-shadow: 0 2px 8px #1e40af18;
       object-fit: contain;
       margin-right: 0.1em;
     }
     .footer-title {
-      font-size: 1.12em;
+      font-size: 1em;
       font-weight: bold;
       color: var(--primary);
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
     }
     .footer-desc {
       color: #465774;
-      font-size: 0.96em;
-      text-align: center;
-      margin-bottom: 0.25em;
-      max-width: 540px;
-      line-height: 1.5;
-    }
-    .footer-contact {
-      margin-top: 0.3em;
-      color: #6c7ca9;
       font-size: 0.93em;
       text-align: center;
+      margin-bottom: 0.13em;
+      max-width: 320px;
+      line-height: 1.4;
     }
-    @media (max-width: 900px) {
+    .footer-contact {
+      margin-top: 0.1em;
+      color: #6c7ca9;
+      font-size: 0.90em;
+      text-align: center;
+    }
+
+    /* Enable scroll for small screens */
+    @media (max-width: 700px) {
+      html, body {
+        overflow: auto;
+      }
+      .main-center-area {
+        padding: 3vw 0 0 0;
+      }
+      .main-container {
+        max-width: 93vw;
+        padding: 0.8em 5vw 0.8em 5vw;
+        border-radius: 12px;
+        gap: 0.45em;
+        margin: 6vw 6vw 2vw 6vw;
+      }
+      .main-logo-container img { max-width: 40px; }
+      h2 { font-size: 1em; }
+      input[type="text"], input[type="password"] { padding: 8px 6px; font-size: 0.95em;}
+      button { font-size: 0.93em; padding: 9px 0;}
+    }
+    @media (max-width: 480px) {
+      html, body {
+        overflow: auto;
+      }
+      .main-center-area {
+        padding-top: 7vw;
+      }
       .main-container {
         max-width: 90vw;
-        padding: 2em 0.9em 1.3em 0.9em;
-        border-radius: 15px;
-        margin: 24px auto 24px auto;
+        padding: 0.6em 3vw 0.6em 3vw;
+        border-radius: 9px;
+        gap: 0.35em;
+        margin: 17vw 6vw 3vw 6vw;
       }
-      .main-logo-container img {
-        max-width: 80px;
-        border-radius: 10px;
-        padding: 4px;
-      }
-      h2 {
-        font-size: 1.5em;
-      }
-      .footer { font-size: 0.97em;}
-      .footer-title { font-size: 1em;}
-    }
-    @media (max-width: 600px) {
-      .main-container {
-        padding: 1.1em 1em 1.1em 1em;
-        max-width: 310px;
-        border-radius: 10px;
-        gap: 0.8em;
-        margin: 16px auto 16px auto;
-      }
-      .main-logo-container img {
-        max-width: 54px;
-        border-radius: 8px;
-        padding: 3px;
-      }
-      h2 {
-        font-size: 1.07em;
-      }
-      button {
-        font-size: 0.98em;
-        padding: 12px 0;
-        border-radius: 7px;
-      }
-      input[type="text"], input[type="password"] {
-        font-size: 0.97em;
-        padding: 10px 9px;
-        border-radius: 7px;
-      }
-      body {
-        padding: 0;
-      }
-      .loader-img { width: 44px; height: 44px; }
-      .footer { padding: 0.9em 0 0.8em 0;}
-      .footer-logo-row img { width: 24px; height: 24px; }
-      .footer-title { font-size: 0.93em;}
-      .footer-desc { font-size: 0.93em;}
-      .footer-contact { font-size: 0.89em;}
+      .main-logo-container img { max-width: 32px; }
+      h2 { font-size: 0.9em;}
+      input[type="text"], input[type="password"] { padding: 7px 4px; font-size: 0.92em;}
+      button { font-size: 0.9em; padding: 8px 0;}
     }
     @media (max-width: 370px) {
-      .main-container {
-        padding: 0.4em 0.4em 0.6em 0.4em;
+      html, body {
+        overflow: auto;
+      }
+      .main-container { 
+        max-width: 99vw; 
+        padding: 0.3em 1vw 0.3em 1vw; 
         border-radius: 7px;
-        max-width: 210px;
-        margin: 8px auto 8px auto;
+        margin: 12vw 2vw 4vw 2vw;
       }
-      h2 {
-        font-size: 1em;
-      }
-      .main-logo-container img {
-        max-width: 38px;
-        padding: 2px;
-      }
-      .footer-logo-row img { width: 17px; height: 17px;}
-      .footer-title { font-size: 0.85em;}
+      .footer-logo-row img { width: 13px; height: 13px;}
+      .footer-title { font-size: 0.81em;}
       .footer-desc { font-size: 0.87em;}
       .footer-contact { font-size: 0.83em;}
+      h2 { font-size: 0.79em;}
     }
   </style>
 </head>
 <body>
-  <div class="main-container">
-    <div class="main-logo-container">
-      <img src="login.png" alt="Pythonic EduTech Logo" id="companyLogoInside">
+  <div class="main-center-area">
+    <div class="main-container">
+      <div class="main-logo-container">
+        <img src="login.png" alt="Pythonic EduTech Logo" id="companyLogoInside">
+      </div>
+      <h2>User Login</h2>
+      <div class="error" id="errMsg"></div>
+      <form id="loginForm" autocomplete="on">
+        <input type="text" id="username" placeholder="Username" required autocomplete="username" />
+        <input type="password" id="password" placeholder="Password" required autocomplete="current-password" />
+        <button type="submit">Login</button>
+      </form>
     </div>
-    <h2>User Login</h2>
-    <div class="error" id="errMsg"></div>
-    <form id="loginForm" autocomplete="on">
-      <input type="text" id="username" placeholder="Username" required autocomplete="username" />
-      <input type="password" id="password" placeholder="Password" required autocomplete="current-password" />
-      <button type="submit">Login</button>
-    </form>
-  </div>
-  <div class="loader-overlay" id="loaderOverlay" style="display:none;">
-    <img src="loader.gif" alt="Loading..." class="loader-img">
   </div>
   <footer class="footer">
     <div class="footer-logo-row">
@@ -296,11 +298,14 @@
       <span>Email: <a href="mailto:pythonicedutech@gmail.com" style="color:var(--accent);text-decoration:none;">pythonicedutech@gmail.com</a></span>
     </div>
   </footer>
+  <div class="loader-overlay" id="loaderOverlay" style="display:none;">
+    <img src="loader.gif" alt="Loading..." class="loader-img">
+  </div>
 <script>
   function showLoader(show) {
     document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
   }
-  const scriptURL = "https://script.google.com/macros/s/AKfycbzYIv7-ENfEuLLXxH6EKV-O95CmlnaPgchL_SCgTwqbIoo5pRoY6T0tmbgAmNxh8jt9/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycby1ovXu8ex9jbBybu5FGtfJCq-aL8-OhcnqpjEa6FbptzarUOEYGIQQah9Vm8yOPo5Q/exec";
   document.getElementById('loginForm').onsubmit = async (e) => {
     e.preventDefault();
     document.getElementById('errMsg').textContent = '';

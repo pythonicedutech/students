@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>PythonicEduTech|Syllabus</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1">
   <link rel="icon" href="logo.png" type="image/png">
   <style>
     :root {
@@ -466,6 +466,25 @@
     <img src="loader.gif" alt="Loading..." class="loader-img">
   </div>
 <script>
+  // --- Inactivity Auto Logout (15 min) ---
+  (function inactivityLogout() {
+    const LOGOUT_TIME = 15 * 60 * 1000; // 15 minutes in ms
+    let timeout;
+    function resetTimer() {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        localStorage.clear();
+        alert("You have been logged out due to inactivity.");
+        window.location.href = 'index.html';
+      }, LOGOUT_TIME);
+    }
+    // Reset timer on any interaction
+    ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(evt =>
+      document.addEventListener(evt, resetTimer, true)
+    );
+    resetTimer();
+  })();
+
   function showLoader(show) {
     document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
   }
@@ -525,7 +544,7 @@
 
   function logout() { localStorage.clear(); window.location.href = 'index.html'; }
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbzYIv7-ENfEuLLXxH6EKV-O95CmlnaPgchL_SCgTwqbIoo5pRoY6T0tmbgAmNxh8jt9/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycby1ovXu8ex9jbBybu5FGtfJCq-aL8-OhcnqpjEa6FbptzarUOEYGIQQah9Vm8yOPo5Q/exec";
   let currentSubject = null;
   function checkLogin() {
     const username = localStorage.getItem('username');
