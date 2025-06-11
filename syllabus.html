@@ -319,7 +319,8 @@
     .syllabus-table-area.visible { display: block; }
     table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       background: transparent;
       font-size: 1em;
       margin: 0;
@@ -328,7 +329,7 @@
       box-shadow: none;
     }
     th, td {
-      padding: 12px 10px;
+      padding: 14px 11px;
       text-align: left;
       border-bottom: 1px solid #f0f0f0;
     }
@@ -342,15 +343,17 @@
     }
     td.status-cell {
       font-weight: bold;
-      border-radius: 7px;
+      border-radius: 8px;
       text-align: center;
-      font-size: 1.01em;
+      font-size: 1.03em;
       min-width: 86px;
       box-shadow: 0 1px 6px #1e40af11;
     }
     .status-pending { color: #b45309; background: #fef9c3; }
     .status-ongoing { color: #0369a1; background: #e0f2fe;}
     .status-completed { color: #15803d; background: #dcfce7;}
+    .syllabus-table-area tbody tr:nth-child(even) { background: #f3f7ff; }
+    .syllabus-table-area tbody tr:last-child td { border-bottom: none; }
     .syllabus-error {
       color: var(--error);
       margin: 1em 0;
@@ -368,6 +371,23 @@
     .syllabus-table-area::-webkit-scrollbar-thumb {
       background: var(--accent);
       border-radius: 7px;
+    }
+    /* Loader styles */
+    .loader-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.75);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader-img {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 2px 16px #1e40af25;
     }
     @media (max-width: 600px) {
       .syllabus-container { 
@@ -388,6 +408,7 @@
       .syllabus-table-area { border-radius: 8px; }
       th, td { padding: 8px 5px; }
       td.status-cell { min-width: 64px; }
+      .loader-img { width: 44px; height: 44px; }
     }
     @media (max-width: 370px) {
       .syllabus-container { 
@@ -441,7 +462,13 @@
     <div class="syllabus-table-area" id="syllabusTableArea"></div>
     <div class="syllabus-error" id="syllabusError"></div>
   </div>
+  <div class="loader-overlay" id="loaderOverlay" style="display:none;">
+    <img src="loader.gif" alt="Loading..." class="loader-img">
+  </div>
 <script>
+  function showLoader(show) {
+    document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
+  }
   // Hamburger Menu Logic for Mobile (styled & functional)
   (function(){
     const path = window.location.pathname;
@@ -528,6 +555,7 @@
     }
   }
   function percentToColor(percent) {
+    // Red: #f87171 (248,113,113), Green: #16a34a (22,163,74)
     const r1=248,g1=113,b1=113, r2=22,g2=163,b2=74;
     const r = Math.round(r1 + (r2-r1)*(percent/100));
     const g = Math.round(g1 + (g2-g1)*(percent/100));
@@ -548,10 +576,12 @@
     errorDiv.textContent = '';
     setProgress(0);
     document.getElementById('syllabusTableArea').innerHTML = '<div style="text-align:center; color:#6b7280; padding:1em;">Loading...</div>';
+    showLoader(true);
     try {
       const params = new URLSearchParams({action: 'syllabus_table', subject, username});
       let res = await fetch(scriptURL + '?' + params, {method: 'GET'});
       let data = await res.json();
+      showLoader(false);
       if(data.success && Array.isArray(data.syllabus)) {
         setProgress(data.percentage || 0);
         renderTable(data.syllabus);
@@ -560,6 +590,7 @@
         errorDiv.textContent = data.error || "Unable to fetch syllabus data.";
       }
     } catch (e) {
+      showLoader(false);
       document.getElementById('syllabusTableArea').innerHTML = '';
       errorDiv.textContent = "Network error!";
     }

@@ -199,6 +199,23 @@
       stroke-width: 2;
     }
     .user-welcome { text-align: center; margin-bottom: 1em; font-weight: bold; font-size: 1.12em; color: var(--primary);}
+    /* Loader styles */
+    .loader-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.75);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader-img {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 2px 16px #1e40af25;
+    }
     @media (max-width: 900px) {
       .dashboard-container { padding: 2em 1em 1.5em 1em; max-width: 92vw; border-radius: 15px; }
       h2 { font-size: 1.5em; }
@@ -212,6 +229,7 @@
       .piechart-wrapper { padding: 10px 0; }
       #piechart { min-height: 130px; }
       .piechart-title-space .google-visualization-chart-title { font-size: 1em !important; }
+      .loader-img { width: 44px; height: 44px; }
     }
     @media (max-width: 370px) {
       .dashboard-container { padding: 0.4em 0.1em 0.6em 0.1em; border-radius: 7px; max-width: 210px; }
@@ -253,7 +271,14 @@
       <div class="piechart-gap"></div>
     </div>
   </div>
+  <div class="loader-overlay" id="loaderOverlay" style="display:none;">
+    <img src="loader.gif" alt="Loading..." class="loader-img">
+  </div>
 <script>
+  function showLoader(show) {
+    document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
+  }
+
   // Hamburger menu logic for mobile
   (function(){
     const hamburger = document.getElementById('headerHamburger');
@@ -326,10 +351,12 @@
     fetchFees(username);
   }
   async function fetchFees(username) {
+    showLoader(true);
     const params = new URLSearchParams({action: 'getFees', username});
     try {
       let res = await fetch(scriptURL + '?' + params, {method: 'GET'});
       let data = await res.json();
+      showLoader(false);
       if(data.success) {
         const total = Number(data.total) || 0;
         const paid = Number(data.paid) || 0;
@@ -345,6 +372,7 @@
         document.getElementById('piechart').innerHTML = '<b>No fees data found.</b>';
       }
     } catch (err) {
+      showLoader(false);
       document.getElementById('piechart').innerHTML = '<b>Network error loading data.</b>';
     }
   }
@@ -376,7 +404,6 @@
       var chart = new google.visualization.PieChart(document.getElementById('piechart'));
       google.visualization.events.addListener(chart, 'ready', function() {
         chart.setSelection([{row: 1, column: null}]);
-        // No need to adjust margins here; handled by .piechart-gap
       });
       google.visualization.events.addListener(chart, 'select', function() {
         var sel = chart.getSelection();
