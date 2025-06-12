@@ -147,10 +147,19 @@
       .header-nav a.active, .header-nav a:hover, .header-nav button:focus, .header-nav button:hover { background: var(--bg); color: var(--primary);}
     }
     .dashboard-container {
-      background: var(--card); max-width: 430px; width: 100%;
-      margin: 0 auto 2em auto; padding: 2em 1.8em 1.7em 1.8em; border-radius: 20px;
-      box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 1.1em;
-      animation: popIn 0.8s cubic-bezier(.25,1.7,.35,.8); box-sizing: border-box;
+      background: var(--card);
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto 2em auto;
+      padding: 2em 1.8em 1.7em 1.8em;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 1.1em;
+      animation: popIn 0.8s cubic-bezier(.25,1.7,.35,.8);
+      box-sizing: border-box;
+      transition: max-width 0.2s;
     }
     @keyframes popIn {
       0% { transform: scale(0.97) translateY(40px); opacity: 0;}
@@ -167,13 +176,28 @@
     }
     /* Spacing helpers for pie chart layout */
     .piechart-gap { height: 28px; }
+    @media (max-width: 1200px) {
+      .dashboard-container { max-width: 700px; }
+    }
     @media (max-width: 900px) {
+      .dashboard-container { max-width: 520px; }
       .piechart-gap { height: 22px; }
     }
     @media (max-width: 600px) {
+      .dashboard-container { padding: 1.1em 1em 1.1em 1em; max-width: 310px; border-radius: 10px; gap: 0.7em; }
+      h2 { font-size: 1.07em; }
+      .fees-table, .fees-table td { font-size: 0.97em; }
+      .piechart-wrapper { padding: 10px 0; }
+      #piechart { min-height: 130px; }
+      .piechart-title-space .google-visualization-chart-title { font-size: 1em !important; }
+      .loader-img { width: 44px; height: 44px; }
       .piechart-gap { height: 12px; }
     }
     @media (max-width: 370px) {
+      .dashboard-container { padding: 0.4em 0.1em 0.6em 0.1em; border-radius: 7px; max-width: 210px; }
+      h2 { font-size: 1em; }
+      .fees-table, .fees-table td { font-size: 0.93em; }
+      .piechart-title-space .google-visualization-chart-title { font-size: .92em !important; }
       .piechart-gap { height: 7px; }
     }
     .piechart-title-space .google-visualization-chart-title {
@@ -215,27 +239,6 @@
       object-fit: contain;
       border-radius: 10px;
       box-shadow: 0 2px 16px #1e40af25;
-    }
-    @media (max-width: 900px) {
-      .dashboard-container { padding: 2em 1em 1.5em 1em; max-width: 92vw; border-radius: 15px; }
-      h2 { font-size: 1.5em; }
-      .fees-table, .fees-table td { font-size: 1em; }
-      .piechart-wrapper { padding: 20px 0; }
-    }
-    @media (max-width: 600px) {
-      .dashboard-container { padding: 1.1em 1em 1.1em 1em; max-width: 310px; border-radius: 10px; gap: 0.7em; }
-      h2 { font-size: 1.07em; }
-      .fees-table, .fees-table td { font-size: 0.97em; }
-      .piechart-wrapper { padding: 10px 0; }
-      #piechart { min-height: 130px; }
-      .piechart-title-space .google-visualization-chart-title { font-size: 1em !important; }
-      .loader-img { width: 44px; height: 44px; }
-    }
-    @media (max-width: 370px) {
-      .dashboard-container { padding: 0.4em 0.1em 0.6em 0.1em; border-radius: 7px; max-width: 210px; }
-      h2 { font-size: 1em; }
-      .fees-table, .fees-table td { font-size: 0.93em; }
-      .piechart-title-space .google-visualization-chart-title { font-size: .92em !important; }
     }
   </style>
 </head>
@@ -358,7 +361,7 @@
     if (amount === '-' || amount === undefined || amount === null) return '-';
     return '₹' + Number(amount).toLocaleString('en-IN');
   }
-  const scriptURL = "https://script.google.com/macros/s/AKfycby1ovXu8ex9jbBybu5FGtfJCq-aL8-OhcnqpjEa6FbptzarUOEYGIQQah9Vm8yOPo5Q/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxawyyj1CGEB0zSdxCWFFcsHTZJZndcPKOLyQ5y192QuxEZ7scFiFN0SG1yhRGCVE-x/exec";
   function checkLogin() {
     const username = localStorage.getItem('username');
     const fullname = localStorage.getItem('fullname');

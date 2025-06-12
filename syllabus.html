@@ -181,7 +181,7 @@
     /* HEADER STYLES END */
     .syllabus-container {
       background: var(--card);
-      max-width: 440px;
+      max-width: 900px;
       width: 100%;
       margin: 0 auto 2em auto;
       padding: 2.2em 1.8em 2.1em 1.8em;
@@ -317,6 +317,15 @@
       transition: box-shadow 0.18s;
     }
     .syllabus-table-area.visible { display: block; }
+    .syllabus-table-heading {
+      font-size: 1.35em;
+      font-weight: bold;
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 0.7em;
+      margin-top: 0.5em;
+      letter-spacing: 0.01em;
+    }
     table {
       width: 100%;
       border-collapse: separate;
@@ -389,11 +398,66 @@
       border-radius: 10px;
       box-shadow: 0 2px 16px #1e40af25;
     }
-    @media (max-width: 600px) {
+    @media (max-width: 1200px) {
+      .syllabus-container { max-width: 700px; }
+    }
+    @media (max-width: 900px) {
+      .syllabus-container { max-width: 520px; }
+    }
+    @media (max-width: 700px) {
+      .syllabus-container { max-width: 98vw; }
+      .header { padding: 0.6em 0.7em; min-height: 44px; }
+      .logo-mini img { height: 27px; width: 27px; border-radius: 5px; padding: 2px; }
+      .logo-mini { font-size: 1em; gap: 0.4em; }
+      .header-hamburger { display: flex; }
+      .header-nav {
+        display: block;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--card);
+        box-shadow: 0 4px 24px #1e40af22;
+        padding: 0;
+        z-index: 150;
+        color: var(--primary);
+      }
+      .header-nav-list {
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+        padding: 0.9em 0 0.9em 0;
+        width: 100%;
+        display: none;
+        border-radius: 0 0 12px 12px;
+        overflow: hidden;
+        background: var(--card);
+        box-shadow: 0 8px 24px #1e40af22;
+      }
+      .header-nav-list.open {
+        display: flex;
+        animation: dropdownShow 0.23s cubic-bezier(.4,2,.6,1);
+      }
+      @keyframes dropdownShow {
+        from { opacity: 0; transform: translateY(-10px);}
+        to { opacity: 1; transform: none;}
+      }
+      .header-nav a, .header-nav button {
+        color: var(--primary);
+        background: none;
+        font-size: 1.12em;
+        font-weight: 500;
+        padding: 13px 22px;
+        width: 100%;
+        border-radius: 0;
+      }
+      .header-nav a.active, .header-nav a:hover, .header-nav button:focus, .header-nav button:hover {
+        background: var(--bg);
+        color: var(--primary);
+      }
       .syllabus-container { 
         padding: 1.1em 0.4em 1.1em 0.4em; 
         border-radius: 10px; 
-        max-width: 310px;
         gap: 0.9em;
       }
       h2 { font-size: 1.2em; }
@@ -450,6 +514,7 @@
       <button class="syllabus-option-btn" id="btn-python" onclick="selectSyllabus('python')">Python</button>
       <button class="syllabus-option-btn" id="btn-sql" onclick="selectSyllabus('sql')">SQL</button>
     </div>
+    <div id="syllabusSelectedHeading"></div>
     <div class="completion-ring" id="completionRing" style="display:none;">
       <div class="progress-ring" id="progressRing">
         <svg viewBox="0 0 90 90">
@@ -544,7 +609,7 @@
 
   function logout() { localStorage.clear(); window.location.href = 'index.html'; }
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycby1ovXu8ex9jbBybu5FGtfJCq-aL8-OhcnqpjEa6FbptzarUOEYGIQQah9Vm8yOPo5Q/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxawyyj1CGEB0zSdxCWFFcsHTZJZndcPKOLyQ5y192QuxEZ7scFiFN0SG1yhRGCVE-x/exec";
   let currentSubject = null;
   function checkLogin() {
     const username = localStorage.getItem('username');
@@ -559,14 +624,23 @@
     document.getElementById('syllabusTableArea').classList.remove('visible');
     document.getElementById('syllabusTableArea').innerHTML = "";
     document.getElementById('syllabusError').textContent = '';
+    document.getElementById('syllabusSelectedHeading').innerHTML = "";
     document.getElementById('btn-python').classList.remove('selected');
     document.getElementById('btn-sql').classList.remove('selected');
   }
   function selectSyllabus(subject) {
+    // Show heading above the table
+    var headingDiv = document.getElementById('syllabusSelectedHeading');
+    if(subject === 'python') {
+      headingDiv.innerHTML = `<div class="syllabus-table-heading">Python Syllabus</div>`;
+    } else if(subject === 'sql') {
+      headingDiv.innerHTML = `<div class="syllabus-table-heading">SQL Syllabus</div>`;
+    } else {
+      headingDiv.innerHTML = "";
+    }
+
     if(subject !== currentSubject) {
       currentSubject = subject;
-      document.getElementById('btn-python').classList.toggle('selected', subject === 'python');
-      document.getElementById('btn-sql').classList.toggle('selected', subject === 'sql');
       const username = localStorage.getItem('username');
       document.getElementById('completionRing').style.display = 'flex';
       document.getElementById('syllabusTableArea').classList.add('visible');

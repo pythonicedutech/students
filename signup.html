@@ -2,12 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PythonicEduTech|Login</title>
-  <!-- Lock user zoom for all devices -->
+  <title>PythonicEduTech|Sign Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1">
   <link rel="icon" href="logo.png" type="image/png">
-  <!-- Boxicons for eye icon -->
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <style>
     :root {
       --primary: #1e40af;
@@ -24,6 +21,9 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Segoe UI', Arial, sans-serif;
+      width: 100vw;
+      min-height: 100vh;
+      /* Remove scroll bar for large screens */
       overflow: hidden;
     }
     body {
@@ -34,21 +34,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       background: url('background.jpg') center center / cover no-repeat fixed;
       background-color: var(--bg);
     }
     .main-center-area {
-      flex: 1 0 auto;
+      width: 100vw;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 0;
-      min-width: 0;
-      width: 100vw;
-      position: relative;
-      z-index: 1;
+      justify-content: flex-start;
+      margin-top: 50px;
+      margin-bottom: 10px;
+      flex-shrink: 0;
     }
     .main-container {
       background: var(--card);
@@ -56,7 +54,7 @@
       box-shadow: var(--shadow);
       padding: 1.2em 2em 1.3em 2em;
       width: 100%;
-      max-width: 320px;
+      max-width: 340px;
       min-width: 0;
       margin: 0 auto;
       display: flex;
@@ -66,13 +64,6 @@
       justify-content: center;
       animation: popIn 0.8s cubic-bezier(.25,1.7,.35,.8);
       box-sizing: border-box;
-      transition: max-width 0.22s;
-    }
-    @media (min-width: 900px) {
-      .main-container {
-        max-width: 410px;
-        padding: 2.1em 3.2em 2.2em 3.2em;
-      }
     }
     .main-logo-container {
       display: flex;
@@ -103,9 +94,9 @@
       letter-spacing: 0.01em;
       font-weight: 600;
     }
-    input[type="text"], input[type="password"] {
+    input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
       width: 100%;
-      padding: 9px 38px 9px 9px; /* right padding for the eye icon */
+      padding: 9px 9px;
       margin: 7px 0 10px 0;
       border: 1px solid #cfd8dc;
       border-radius: 7px;
@@ -116,55 +107,10 @@
       box-sizing: border-box;
       font-family: inherit;
     }
-    input[type="text"]:focus, input[type="password"]:focus {
+    input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus {
       border-color: var(--primary);
       background: #f0f7ff;
       box-shadow: 0 0 5px #537fe733;
-    }
-    .password-wrapper {
-      position: relative;
-      width: 100%;
-    }
-    .password-eye {
-      position: absolute;
-      top: 50%;
-      right: 11px;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 1.21em;
-      color: #b7b7b7;
-      z-index: 2;
-      user-select: none;
-    }
-    .signup-link-container {
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      margin: 8px 0 0 0;
-    }
-    .signup-link {
-      font-size: 0.98em;
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-      padding: 2px 4px;
-      border-radius: 4px;
-      transition: color 0.16s, background 0.16s;
-      margin-top: 0.18em;
-      display: inline-block;
-      text-align: center;
-    }
-    .signup-link:hover {
-      color: var(--accent);
-      background: #f0f7ff;
-      text-decoration: underline;
-    }
-    .signup-link.center {
-      justify-content: center !important;
-      display: flex;
-      width: 100%;
-      text-align: center;
-      margin-top: 12px;
     }
     button {
       width: 100%;
@@ -194,6 +140,29 @@
       margin-bottom: 2px;
       letter-spacing: 0.01em;
     }
+    .login-link-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .login-link {
+      font-size: 0.98em;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: color 0.16s, background 0.16s;
+      text-align: center;
+      display: inline-block;
+    }
+    .login-link:hover {
+      color: var(--accent);
+      background: #f0f7ff;
+      text-decoration: underline;
+    }
+    /* Loader overlay matches index.html */
     .loader-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -210,56 +179,27 @@
       border-radius: 8px;
       box-shadow: 0 2px 12px #1e40af25;
     }
-    .footer {
-      width: 100vw;
-      background: var(--card);
-      border-top: 1.2px solid #dbeafe;
-      box-shadow: 0 -2px 12px #1e40af0a;
-      padding: 0.7em 0 0.6em 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.93em;
-      flex-shrink: 0;
-      min-height: 46px;
-      margin-top: 2.7vh;
-      position: relative;
-      z-index: 2;
+    /* For large screens, reduce margins and prevent scroll */
+    @media (min-width: 900px) {
+      html, body {
+        overflow: hidden !important;
+      }
+      .main-center-area {
+        margin-top: 40px;
+        margin-bottom: 0;
+      }
+      .main-container {
+        margin-top: 0;
+        margin-bottom: 0;
+        max-width: 340px;
+        border-radius: 14px;
+        padding: 1.15em 2em 1.15em 2em;
+      }
     }
-    .footer-logo-row {
-      display: flex;
-      align-items: center;
-      gap: 0.6em;
-      margin-bottom: 0.2em;
-    }
-    .footer-logo-row img {
-      width: 22px;
-      height: 22px;
-      border-radius: 5px;
-      background: #fff;
-      box-shadow: 0 2px 8px #1e40af18;
-      object-fit: contain;
-      margin-right: 0.1em;
-    }
-    .footer-title {
-      font-size: 1em;
-      font-weight: bold;
-      color: var(--primary);
-      letter-spacing: 0.01em;
-    }
-    .footer-desc {
-      color: #465774;
-      font-size: 0.93em;
-      text-align: center;
-      margin-bottom: 0.13em;
-      max-width: 320px;
-      line-height: 1.4;
-    }
-    .footer-contact {
-      margin-top: 0.1em;
-      color: #6c7ca9;
-      font-size: 0.90em;
-      text-align: center;
+    @media (max-width: 900px) {
+      .main-center-area {
+        margin-top: 20px;
+      }
     }
     @media (max-width: 700px) {
       html, body {
@@ -267,9 +207,11 @@
       }
       .main-center-area {
         padding: 3vw 0 0 0;
+        margin-top: 4vw;
+        margin-bottom: 5vw;
       }
       .main-container {
-        max-width: 93vw;
+        max-width: 96vw;
         padding: 0.8em 5vw 0.8em 5vw;
         border-radius: 12px;
         gap: 0.45em;
@@ -277,7 +219,7 @@
       }
       .main-logo-container img { max-width: 40px; }
       h2 { font-size: 1em; }
-      input[type="text"], input[type="password"] { padding: 8px 6px 8px 6px;}
+      input[type], input[type="password"], input[type="email"], input[type="tel"] { padding: 8px 6px; font-size: 0.95em;}
       button { font-size: 0.93em; padding: 9px 0;}
     }
     @media (max-width: 480px) {
@@ -286,9 +228,11 @@
       }
       .main-center-area {
         padding-top: 7vw;
+        margin-top: 2vw;
+        margin-bottom: 3vw;
       }
       .main-container {
-        max-width: 90vw;
+        max-width: 92vw;
         padding: 0.6em 3vw 0.6em 3vw;
         border-radius: 9px;
         gap: 0.35em;
@@ -296,12 +240,16 @@
       }
       .main-logo-container img { max-width: 32px; }
       h2 { font-size: 0.9em;}
-      input[type="text"], input[type="password"] { padding: 7px 4px;}
+      input[type="text"], input[type="password"], input[type="email"], input[type="tel"] { padding: 7px 4px; font-size: 0.92em;}
       button { font-size: 0.9em; padding: 8px 0;}
     }
     @media (max-width: 370px) {
       html, body {
         overflow: auto;
+      }
+      .main-center-area {
+        margin-top: 0;
+        margin-bottom: 0;
       }
       .main-container { 
         max-width: 99vw; 
@@ -309,10 +257,7 @@
         border-radius: 7px;
         margin: 12vw 2vw 4vw 2vw;
       }
-      .footer-logo-row img { width: 13px; height: 13px;}
-      .footer-title { font-size: 0.81em;}
-      .footer-desc { font-size: 0.87em;}
-      .footer-contact { font-size: 0.83em;}
+      .main-logo-container img { width: 13px; height: 13px;}
       h2 { font-size: 0.79em;}
     }
   </style>
@@ -323,79 +268,81 @@
       <div class="main-logo-container">
         <img src="logo.png" alt="Pythonic EduTech Logo" id="companyLogoInside">
       </div>
-      <h2>User Login</h2>
+      <h2>Create Your Account</h2>
       <div class="error" id="errMsg"></div>
-      <form id="loginForm" autocomplete="on">
+      <form id="signupForm" autocomplete="on">
+        <input type="text" id="fullname" placeholder="Full Name" required autocomplete="name" />
         <input type="text" id="username" placeholder="Username" required autocomplete="username" />
-        <div class="password-wrapper">
-          <input type="password" id="password" placeholder="Password" required autocomplete="current-password" />
-          <span class="password-eye" id="togglePassword">
-            <i class='bx bx-show'></i>
-          </span>
-        </div>
-        <button type="submit">Login</button>
+        <input type="email" id="email" placeholder="Email" required autocomplete="email" />
+        <input type="tel" id="phone" placeholder="Phone Number" required autocomplete="tel" pattern="[0-9]{10,14}" />
+        <input type="password" id="password" placeholder="Password" required autocomplete="new-password" />
+        <input type="password" id="confirm_password" placeholder="Confirm Password" required autocomplete="new-password" />
+        <button type="submit">Sign Up</button>
       </form>
-      <div class="signup-link-container" style="justify-content: center;">
-        <a href="signup.html" class="signup-link center">Don't have an account? Sign up</a>
+      <div class="login-link-container">
+        <a href="index.html" class="login-link">Already have an account? Login</a>
       </div>
     </div>
   </div>
-  <footer class="footer">
-    <div class="footer-logo-row">
-      <img src="logo.png" alt="Pythonic EduTech Logo" />
-      <span class="footer-title">Pythonic EduTech</span>
-    </div>
-    <div class="footer-desc">
-      Empowering learners with interactive Python, SQL, and coding skills.<br>
-      Join us for practical, project-based learning, expert mentorship, and a vibrant tech community.
-    </div>
-    <div class="footer-contact">
-      &copy; 2025 Pythonic EduTech. All rights reserved.<br>
-      <span>Email: <a href="mailto:pythonicedutech@gmail.com" style="color:var(--accent);text-decoration:none;">pythonicedutech@gmail.com</a></span>
-    </div>
-  </footer>
   <div class="loader-overlay" id="loaderOverlay" style="display:none;">
     <img src="loader.gif" alt="Loading..." class="loader-img">
   </div>
 <script>
-  // Password eye toggle
-  const passwordInput = document.getElementById('password');
-  const togglePassword = document.getElementById('togglePassword');
-  togglePassword.addEventListener('click', function () {
-    const isHidden = passwordInput.type === 'password';
-    passwordInput.type = isHidden ? 'text' : 'password';
-    this.innerHTML = isHidden
-      ? "<i class='bx bx-hide'></i>"
-      : "<i class='bx bx-show'></i>";
-  });
-
+  // No change needed here, loader overlay is already matched to index.html
   function showLoader(show) {
     document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
   }
   const scriptURL = "https://script.google.com/macros/s/AKfycbxawyyj1CGEB0zSdxCWFFcsHTZJZndcPKOLyQ5y192QuxEZ7scFiFN0SG1yhRGCVE-x/exec";
-  document.getElementById('loginForm').onsubmit = async (e) => {
+  document.getElementById('signupForm').onsubmit = async (e) => {
     e.preventDefault();
-    document.getElementById('errMsg').textContent = '';
+    const err = document.getElementById('errMsg');
+    err.textContent = '';
     showLoader(true);
+    const fullname = document.getElementById('fullname').value.trim();
     const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const params = new URLSearchParams({action: 'login', username, password});
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('confirm_password').value;
+    if (!fullname || !username || !email || !phone || !password || !confirm) {
+      showLoader(false);
+      err.textContent = "Please fill all fields.";
+      return;
+    }
+    if (password !== confirm) {
+      showLoader(false);
+      err.textContent = "Passwords do not match.";
+      return;
+    }
+    if (!/^[0-9]{10,14}$/.test(phone)) {
+      showLoader(false);
+      err.textContent = "Enter a valid phone number.";
+      return;
+    }
+    const params = new URLSearchParams({
+      action: 'signup',
+      fullname,
+      username,
+      email,
+      phone,
+      password
+    });
     try {
       let res = await fetch(scriptURL + '?' + params, {method: 'GET'});
       let data = await res.json();
       showLoader(false);
       if(data.success) {
         localStorage.setItem('username', username);
-        localStorage.setItem('fullname', data.fullname);
-        window.location.href = "syllabus.html"; // redirect to syllabus after login
+        localStorage.setItem('fullname', fullname);
+        window.location.href = "index.html"; // Redirect after successful signup
       } else {
-        document.getElementById('errMsg').textContent = data.error || "Login failed";
+        err.textContent = data.error || "Signup failed";
       }
-    } catch(err) {
+    } catch (err2) {
       showLoader(false);
-      document.getElementById('errMsg').textContent = "Network error!";
+      err.textContent = "Network error!";
     }
-  }
+  };
 </script>
 </body>
 </html>
