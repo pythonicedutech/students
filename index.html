@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>PythonicEduTech|Login</title>
-  <!-- Lock user zoom for all devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1">
   <link rel="icon" href="logo.png" type="image/png">
-  <!-- Boxicons for eye icon -->
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <style>
     :root {
@@ -24,7 +22,8 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Segoe UI', Arial, sans-serif;
-      overflow: hidden;
+      width: 100vw;
+      min-height: 100vh;
     }
     body {
       min-height: 100vh;
@@ -34,21 +33,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: stretch;
       background: url('background.jpg') center center / cover no-repeat fixed;
       background-color: var(--bg);
+      position: relative;
     }
     .main-center-area {
-      flex: 1 0 auto;
+      flex: 1 1 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      width: 100vw;
       min-height: 0;
       min-width: 0;
-      width: 100vw;
-      position: relative;
-      z-index: 1;
     }
     .main-container {
       background: var(--card);
@@ -136,13 +134,15 @@
       z-index: 2;
       user-select: none;
     }
-    .signup-link-container {
+    .signup-link-container,
+    .forgot-link-container {
       width: 100%;
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
       margin: 8px 0 0 0;
     }
-    .signup-link {
+    .signup-link,
+    .forgot-link {
       font-size: 0.98em;
       color: var(--primary);
       text-decoration: none;
@@ -154,7 +154,8 @@
       display: inline-block;
       text-align: center;
     }
-    .signup-link:hover {
+    .signup-link:hover,
+    .forgot-link:hover {
       color: var(--accent);
       background: #f0f7ff;
       text-decoration: underline;
@@ -165,6 +166,22 @@
       width: 100%;
       text-align: center;
       margin-top: 12px;
+    }
+    .forgot-link-container {
+      justify-content: center;
+      margin-top: 0;
+      margin-bottom: 4px;
+    }
+    .forgot-link {
+      color: #537fe7;
+      font-size: 0.97em;
+      background: transparent;
+      margin-left: 0;
+      margin-right: 0;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      cursor: pointer;
     }
     button {
       width: 100%;
@@ -335,7 +352,10 @@
         </div>
         <button type="submit">Login</button>
       </form>
-      <div class="signup-link-container" style="justify-content: center;">
+      <div class="forgot-link-container">
+        <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+      </div>
+      <div class="signup-link-container">
         <a href="signup.html" class="signup-link center">Don't have an account? Sign up</a>
       </div>
     </div>
