@@ -25,7 +25,6 @@
       font-family: 'Segoe UI', Arial, sans-serif;
       width: 100vw;
       min-height: 100vh;
-      /* Remove scroll bar for large screens */
       overflow: hidden;
     }
     body {
@@ -133,8 +132,6 @@
       background: linear-gradient(90deg, #23398c, #5c5cd6);
       outline: none;
     }
-
-    /* ======= POPUP ERROR STYLE ======= */
     .error {
       color: var(--error);
       background: var(--error-bg);
@@ -173,8 +170,6 @@
       70% { opacity: 1; transform: scale(1.03) translateY(-5px);}
       100% { opacity: 1; transform: scale(1) translateY(0);}
     }
-    /* ======= END POPUP ERROR STYLE ======= */
-
     .login-link-container {
       width: 100%;
       display: flex;
@@ -197,7 +192,6 @@
       background: #f0f7ff;
       text-decoration: underline;
     }
-    /* Loader overlay matches index.html */
     .loader-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -214,86 +208,109 @@
       border-radius: 8px;
       box-shadow: 0 2px 12px #1e40af25;
     }
-    @media (min-width: 900px) {
-      html, body {
-        overflow: hidden !important;
-      }
-      .main-center-area {
-        margin-top: 40px;
-        margin-bottom: 0;
-      }
-      .main-container {
-        margin-top: 0;
-        margin-bottom: 0;
-        max-width: 340px;
-        border-radius: 14px;
-        padding: 1.15em 2em 1.15em 2em;
-      }
+    /* OTP POPUP */
+    .otp-popup-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(30,64,175,0.18);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
     }
-    @media (max-width: 900px) {
-      .main-center-area {
-        margin-top: 20px;
-      }
+    .otp-popup-bg.show { display: flex; }
+    .otp-popup {
+      background: #fff;
+      border-radius: 14px;
+      padding: 2.2em 1.5em 1.4em 1.5em; /* more top padding for close button */
+      box-shadow: 0 6px 32px #1e40af33, 0 1.5px 6px #aecbfa1a;
+      min-width: 250px;
+      max-width: 95vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: popIn 0.5s cubic-bezier(.25,1.7,.35,.8);
+      position: relative;
     }
-    @media (max-width: 700px) {
-      html, body {
-        overflow: auto;
-      }
-      .main-center-area {
-        padding: 3vw 0 0 0;
-        margin-top: 4vw;
-        margin-bottom: 5vw;
-      }
-      .main-container {
-        max-width: 96vw;
-        padding: 0.8em 5vw 0.8em 5vw;
-        border-radius: 12px;
-        gap: 0.45em;
-        margin: 6vw 6vw 2vw 6vw;
-      }
-      .main-logo-container img { max-width: 40px; }
-      h2 { font-size: 1em; }
-      input[type], input[type="password"], input[type="email"], input[type="tel"] { padding: 8px 6px; font-size: 0.95em;}
-      button { font-size: 0.93em; padding: 9px 0;}
+    .otp-popup .close-otp-popup {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.4em;
+      color: #aaa;
+      cursor: pointer;
+      z-index: 10;
+      padding: 0;
+      line-height: 1;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s;
     }
-    @media (max-width: 480px) {
-      html, body {
-        overflow: auto;
-      }
-      .main-center-area {
-        padding-top: 7vw;
-        margin-top: 2vw;
-        margin-bottom: 3vw;
-      }
-      .main-container {
-        max-width: 92vw;
-        padding: 0.6em 3vw 0.6em 3vw;
-        border-radius: 9px;
-        gap: 0.35em;
-        margin: 17vw 6vw 3vw 6vw;
-      }
-      .main-logo-container img { max-width: 32px; }
-      h2 { font-size: 0.9em;}
-      input[type="text"], input[type="password"], input[type="email"], input[type="tel"] { padding: 7px 4px; font-size: 0.92em;}
-      button { font-size: 0.9em; padding: 8px 0;}
+    .otp-popup .close-otp-popup:hover,
+    .otp-popup .close-otp-popup:focus {
+      color: var(--error);
+      background: #f3f4f6;
+      border-radius: 50%;
     }
-    @media (max-width: 370px) {
-      html, body {
-        overflow: auto;
-      }
-      .main-center-area {
-        margin-top: 0;
-        margin-bottom: 0;
-      }
-      .main-container {
-        max-width: 99vw;
-        padding: 0.3em 1vw 0.3em 1vw;
-        border-radius: 7px;
-        margin: 12vw 2vw 4vw 2vw;
-      }
-      .main-logo-container img { width: 13px; height: 13px;}
-      h2 { font-size: 0.79em;}
+    .otp-popup h3 {
+      margin: 0.5em 0 0.6em 0;
+      color: var(--primary);
+      font-size: 1.14em;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      text-align: center;
+      width: 100%;
     }
+    .otp-popup input[type="text"] {
+      letter-spacing: 0.22em;
+      font-size: 1.13em;
+      text-align: center;
+      margin-bottom: 0.8em;
+      border: 1.5px solid #cfd8dc;
+      border-radius: 7px;
+      padding: 10px;
+      width: 160px;
+      background: #f8fafc;
+      outline: none;
+      transition: border-color .22s;
+    }
+    .otp-popup input[type="text"]:focus { border-color: var(--primary);}
+    .otp-popup button {
+      width: 100%;
+      margin: 0.5em 0 0 0;
+    }
+    .otp-popup .otp-error {
+      color: var(--error);
+      font-size: 0.99em;
+      background: var(--error-bg);
+      border-radius: 7px;
+      padding: 5px 10px;
+      margin-bottom: 0.5em;
+      display: none;
+      text-align: center;
+    }
+    .otp-popup .otp-error.show { display: block;}
+    .otp-popup .resend-link {
+      color: var(--primary);
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.98em;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-top: 0.4em;
+    }
+    @media (min-width: 900px) { html, body { overflow: hidden !important; } .main-center-area { margin-top: 40px; margin-bottom: 0; } .main-container { margin-top: 0; margin-bottom: 0; max-width: 340px; border-radius: 14px; padding: 1.15em 2em 1.15em 2em; } }
+    @media (max-width: 900px) { .main-center-area { margin-top: 20px; } }
+    @media (max-width: 700px) { html, body { overflow: auto; } .main-center-area { padding: 3vw 0 0 0; margin-top: 4vw; margin-bottom: 5vw; } .main-container { max-width: 96vw; padding: 0.8em 5vw 0.8em 5vw; border-radius: 12px; gap: 0.45em; margin: 6vw 6vw 2vw 6vw; } .main-logo-container img { max-width: 40px; } h2 { font-size: 1em; } input[type], input[type="password"], input[type="email"], input[type="tel"] { padding: 8px 6px; font-size: 0.95em;} button { font-size: 0.93em; padding: 9px 0;} }
+    @media (max-width: 480px) { html, body { overflow: auto; } .main-center-area { padding-top: 7vw; margin-top: 2vw; margin-bottom: 3vw; } .main-container { max-width: 92vw; padding: 0.6em 3vw 0.6em 3vw; border-radius: 9px; gap: 0.35em; margin: 17vw 6vw 3vw 6vw; } .main-logo-container img { max-width: 32px; } h2 { font-size: 0.9em;} input[type="text"], input[type="password"], input[type="email"], input[type="tel"] { padding: 7px 4px; font-size: 0.92em;} button { font-size: 0.9em; padding: 8px 0;} }
+    @media (max-width: 370px) { html, body { overflow: auto; } .main-center-area { margin-top: 0; margin-bottom: 0; } .main-container { max-width: 99vw; padding: 0.3em 1vw 0.3em 1vw; border-radius: 7px; margin: 12vw 2vw 4vw 2vw; } .main-logo-container img { width: 13px; height: 13px;} h2 { font-size: 0.79em;} }
   </style>
 </head>
 <body>
@@ -321,6 +338,17 @@
   <div class="loader-overlay" id="loaderOverlay" style="display:none;">
     <img src="loader.gif" alt="Loading..." class="loader-img">
   </div>
+  <!-- OTP POPUP -->
+  <div class="otp-popup-bg" id="otpPopupBg">
+    <div class="otp-popup">
+      <button class="close-otp-popup" onclick="closeOtpPopup()" title="Cancel">&times;</button>
+      <h3>Enter OTP sent to your Email</h3>
+      <div id="otpError" class="otp-error"></div>
+      <input type="text" maxlength="6" id="otpInput" placeholder="6-digit OTP" inputmode="numeric" autofocus>
+      <button type="button" onclick="submitOtp()">Verify OTP</button>
+      <button type="button" class="resend-link" onclick="resendOtp()">Resend OTP</button>
+    </div>
+  </div>
 <script>
   // Error popup styling and logic
   function showError(msg) {
@@ -334,11 +362,97 @@
       errDiv.classList.remove('show');
     }
   }
-
   function showLoader(show) {
     document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
   }
-  const scriptURL = "https://script.google.com/macros/s/AKfycbwk6puFe4lPArFvDNvhQwZGWDClV1bnGyEVaqErlLA6Rz_FEcSr5SJbePXU04QnEKqV/exec";
+  // OTP Popup functions
+  function showOtpPopup(email, signupData) {
+    document.getElementById('otpPopupBg').classList.add('show');
+    document.getElementById('otpInput').value = '';
+    document.getElementById('otpError').textContent = '';
+    document.getElementById('otpError').classList.remove('show');
+    window._currentOtpEmail = email;
+    window._pendingSignup = signupData;
+  }
+  function closeOtpPopup() {
+    document.getElementById('otpPopupBg').classList.remove('show');
+    window._currentOtpEmail = null;
+    window._pendingSignup = null;
+  }
+  function showOtpError(msg) {
+    const errDiv = document.getElementById('otpError');
+    if(msg) {
+      errDiv.textContent = msg;
+      errDiv.classList.add('show');
+    } else {
+      errDiv.textContent = '';
+      errDiv.classList.remove('show');
+    }
+  }
+  function resendOtp() {
+    const signupData = window._pendingSignup;
+    if (!signupData) return;
+    showOtpError('');
+    showLoader(true);
+    // Resend OTP via request_otp, but as we're not in the database yet, send all signup info!
+    const params = new URLSearchParams({
+      action: 'request_otp',
+      fullname: signupData.fullname,
+      username: signupData.username,
+      email: signupData.email,
+      phone: signupData.phone,
+      password: signupData.password
+    });
+    fetch(scriptURL + '?' + params)
+      .then(r => r.json())
+      .then(data => {
+        showLoader(false);
+        if(data.success) {
+          showOtpError("OTP resent to your email.");
+        } else {
+          showOtpError(data.error || "Failed to resend OTP.");
+        }
+      }).catch(() => {
+        showLoader(false);
+        showOtpError("Network error!");
+      });
+  }
+  async function submitOtp() {
+    const signupData = window._pendingSignup;
+    const email = window._currentOtpEmail;
+    const otp = document.getElementById('otpInput').value.trim();
+    if(!otp) {
+      showOtpError("Enter the OTP.");
+      return;
+    }
+    showLoader(true);
+    const params = new URLSearchParams({
+      action: 'verify_otp_signup',
+      fullname: signupData.fullname,
+      username: signupData.username,
+      email: signupData.email,
+      phone: signupData.phone,
+      password: signupData.password,
+      otp: otp
+    });
+    fetch(scriptURL + '?' + params)
+      .then(r => r.json())
+      .then(data => {
+        showLoader(false);
+        if(data.success) {
+          localStorage.setItem('username', signupData.username);
+          localStorage.setItem('fullname', signupData.fullname);
+          window.location.href = "index.html";
+        } else {
+          showOtpError(data.error || "Invalid OTP.");
+        }
+      }).catch(() => {
+        showLoader(false);
+        showOtpError("Network error!");
+      });
+  }
+  // --- SIGNUP LOGIC ---
+  const scriptURL = "https://script.google.com/macros/s/AKfycbzWSkVv8Zrj9KAyad8RfeWTyza1ny_JemjUIi3hB1MzV7UCNPaRxxYsREpFH5aAHszs/exec";
   document.getElementById('signupForm').onsubmit = async (e) => {
     e.preventDefault();
     showError('');
@@ -364,8 +478,9 @@
       showError("Enter a valid phone number.");
       return;
     }
+    // Call request_otp with signup data (no DB insert yet)
     const params = new URLSearchParams({
-      action: 'signup',
+      action: 'request_otp',
       fullname,
       username,
       email,
@@ -377,9 +492,7 @@
       let data = await res.json();
       showLoader(false);
       if(data.success) {
-        localStorage.setItem('username', username);
-        localStorage.setItem('fullname', fullname);
-        window.location.href = "index.html"; // Redirect after successful signup
+        showOtpPopup(email, {fullname, username, email, phone, password});
       } else {
         showError(data.error || "Signup failed");
       }
