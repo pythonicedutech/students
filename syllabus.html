@@ -5,6 +5,7 @@
   <title>PythonicEduTech|Syllabus</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1">
   <link rel="icon" href="logo.png" type="image/png">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <style>
     :root {
       --primary: #1e40af;
@@ -14,6 +15,7 @@
       --shadow: 0 4px 24px 0 rgba(30,64,175,0.12);
       --success: #16a34a;
       --error: #f87171;
+      --error-bg: #fef2f2;
       --pending: #facc15;
       --ongoing: #38bdf8;
       --completed: #16a34a;
@@ -30,7 +32,6 @@
       align-items: center;
       justify-content: flex-start;
     }
-    /* HEADER STYLES START */
     .header {
       width: 100vw;
       background: linear-gradient(90deg, var(--primary), var(--accent));
@@ -178,7 +179,6 @@
         color: var(--primary);
       }
     }
-    /* HEADER STYLES END */
     .syllabus-container {
       background: var(--card);
       max-width: 900px;
@@ -365,12 +365,40 @@
     .syllabus-table-area tbody tr:last-child td { border-bottom: none; }
     .syllabus-error {
       color: var(--error);
-      margin: 1em 0;
-      text-align: center;
-      min-height: 1.5em;
-      font-size: 1.1em;
+      background: var(--error-bg);
+      border: 1.5px solid var(--error);
+      border-radius: 9px;
+      font-size: 1.09em;
       font-weight: 500;
+      text-align: center;
+      min-height: 1.3em;
+      margin: 1em 0 0.7em 0;
       letter-spacing: 0.01em;
+      padding: 9px 13px 9px 13px;
+      box-shadow: 0 2px 10px #f871711a;
+      display: none;
+      align-items: center;
+      gap: 0.5em;
+      justify-content: center;
+      max-width: 100%;
+      transition: opacity 0.2s, transform 0.2s;
+      position: relative;
+      z-index: 10;
+    }
+    .syllabus-error.show {
+      display: flex;
+      animation: errorPop 0.4s cubic-bezier(.46,1.48,.56,.9);
+    }
+    .syllabus-error i {
+      font-size: 1.3em;
+      margin-right: 0.35em;
+      color: var(--error);
+      vertical-align: middle;
+    }
+    @keyframes errorPop {
+      0% { opacity: 0; transform: scale(0.94) translateY(12px);}
+      70% { opacity: 1; transform: scale(1.03) translateY(-5px);}
+      100% { opacity: 1; transform: scale(1) translateY(0);}
     }
     .syllabus-table-area::-webkit-scrollbar {
       height: 8px;
@@ -381,7 +409,6 @@
       background: var(--accent);
       border-radius: 7px;
     }
-    /* Loader styles */
     .loader-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -410,54 +437,9 @@
       .logo-mini img { height: 27px; width: 27px; border-radius: 5px; padding: 2px; }
       .logo-mini { font-size: 1em; gap: 0.4em; }
       .header-hamburger { display: flex; }
-      .header-nav {
-        display: block;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: var(--card);
-        box-shadow: 0 4px 24px #1e40af22;
-        padding: 0;
-        z-index: 150;
-        color: var(--primary);
-      }
-      .header-nav-list {
-        flex-direction: column;
-        gap: 0;
-        margin: 0;
-        padding: 0.9em 0 0.9em 0;
-        width: 100%;
-        display: none;
-        border-radius: 0 0 12px 12px;
-        overflow: hidden;
-        background: var(--card);
-        box-shadow: 0 8px 24px #1e40af22;
-      }
-      .header-nav-list.open {
-        display: flex;
-        animation: dropdownShow 0.23s cubic-bezier(.4,2,.6,1);
-      }
-      @keyframes dropdownShow {
-        from { opacity: 0; transform: translateY(-10px);}
-        to { opacity: 1; transform: none;}
-      }
-      .header-nav a, .header-nav button {
-        color: var(--primary);
-        background: none;
-        font-size: 1.12em;
-        font-weight: 500;
-        padding: 13px 22px;
-        width: 100%;
-        border-radius: 0;
-      }
-      .header-nav a.active, .header-nav a:hover, .header-nav button:focus, .header-nav button:hover {
-        background: var(--bg);
-        color: var(--primary);
-      }
-      .syllabus-container { 
-        padding: 1.1em 0.4em 1.1em 0.4em; 
-        border-radius: 10px; 
+      .syllabus-container {
+        padding: 1.1em 0.4em 1.1em 0.4em;
+        border-radius: 10px;
         gap: 0.9em;
       }
       h2 { font-size: 1.2em; }
@@ -475,8 +457,8 @@
       .loader-img { width: 44px; height: 44px; }
     }
     @media (max-width: 370px) {
-      .syllabus-container { 
-        padding: 0.4em 0.1em 0.6em 0.1em; 
+      .syllabus-container {
+        padding: 0.4em 0.1em 0.6em 0.1em;
         border-radius: 7px;
         max-width: 200px;
         gap: 0.5em;
@@ -525,15 +507,15 @@
       </div>
     </div>
     <div class="syllabus-table-area" id="syllabusTableArea"></div>
-    <div class="syllabus-error" id="syllabusError"></div>
+    <div class="syllabus-error" id="syllabusError"><i class='bx bx-error-circle'></i><span id="syllabusErrorText"></span></div>
   </div>
   <div class="loader-overlay" id="loaderOverlay" style="display:none;">
     <img src="loader.gif" alt="Loading..." class="loader-img">
   </div>
 <script>
-  // --- Inactivity Auto Logout (15 min) ---
+  // Inactivity Auto Logout (15 min)
   (function inactivityLogout() {
-    const LOGOUT_TIME = 15 * 60 * 1000; // 15 minutes in ms
+    const LOGOUT_TIME = 15 * 60 * 1000;
     let timeout;
     function resetTimer() {
       clearTimeout(timeout);
@@ -543,7 +525,6 @@
         window.location.href = 'index.html';
       }, LOGOUT_TIME);
     }
-    // Reset timer on any interaction
     ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(evt =>
       document.addEventListener(evt, resetTimer, true)
     );
@@ -553,7 +534,7 @@
   function showLoader(show) {
     document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
   }
-  // Hamburger Menu Logic for Mobile (styled & functional)
+  // Hamburger Menu Logic for Mobile
   (function(){
     const path = window.location.pathname;
     if (path.endsWith('syllabus.html')) document.getElementById('nav-syllabus').classList.add('active');
@@ -609,7 +590,8 @@
 
   function logout() { localStorage.clear(); window.location.href = 'index.html'; }
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxawyyj1CGEB0zSdxCWFFcsHTZJZndcPKOLyQ5y192QuxEZ7scFiFN0SG1yhRGCVE-x/exec";
+  // Set your Apps Script web app URL here:
+  const scriptURL = "https://script.google.com/macros/s/AKfycbwk6puFe4lPArFvDNvhQwZGWDClV1bnGyEVaqErlLA6Rz_FEcSr5SJbePXU04QnEKqV/exec";
   let currentSubject = null;
   function checkLogin() {
     const username = localStorage.getItem('username');
@@ -623,13 +605,12 @@
     document.getElementById('completionRing').style.display = 'none';
     document.getElementById('syllabusTableArea').classList.remove('visible');
     document.getElementById('syllabusTableArea').innerHTML = "";
-    document.getElementById('syllabusError').textContent = '';
+    showSyllabusError('');
     document.getElementById('syllabusSelectedHeading').innerHTML = "";
     document.getElementById('btn-python').classList.remove('selected');
     document.getElementById('btn-sql').classList.remove('selected');
   }
   function selectSyllabus(subject) {
-    // Show heading above the table
     var headingDiv = document.getElementById('syllabusSelectedHeading');
     if(subject === 'python') {
       headingDiv.innerHTML = `<div class="syllabus-table-heading">Python Syllabus</div>`;
@@ -644,11 +625,17 @@
       const username = localStorage.getItem('username');
       document.getElementById('completionRing').style.display = 'flex';
       document.getElementById('syllabusTableArea').classList.add('visible');
+      document.getElementById('btn-python').classList.remove('selected');
+      document.getElementById('btn-sql').classList.remove('selected');
+      if(subject === 'python') {
+        document.getElementById('btn-python').classList.add('selected');
+      } else if(subject === 'sql') {
+        document.getElementById('btn-sql').classList.add('selected');
+      }
       fetchSyllabus(subject, username);
     }
   }
   function percentToColor(percent) {
-    // Red: #f87171 (248,113,113), Green: #16a34a (22,163,74)
     const r1=248,g1=113,b1=113, r2=22,g2=163,b2=74;
     const r = Math.round(r1 + (r2-r1)*(percent/100));
     const g = Math.round(g1 + (g2-g1)*(percent/100));
@@ -664,13 +651,26 @@
     circle.setAttribute('stroke', percentToColor(percent));
     document.getElementById('progressPercent').textContent = percent + "%";
   }
+
+  function showSyllabusError(msg) {
+    const errDiv = document.getElementById('syllabusError');
+    const errSpan = document.getElementById('syllabusErrorText');
+    if(msg) {
+      errSpan.textContent = msg;
+      errDiv.classList.add('show');
+    } else {
+      errSpan.textContent = '';
+      errDiv.classList.remove('show');
+    }
+  }
+
   async function fetchSyllabus(subject, username) {
-    const errorDiv = document.getElementById('syllabusError');
-    errorDiv.textContent = '';
+    showSyllabusError('');
     setProgress(0);
     document.getElementById('syllabusTableArea').innerHTML = '<div style="text-align:center; color:#6b7280; padding:1em;">Loading...</div>';
     showLoader(true);
     try {
+      // The backend will use the correct sheet (Python or MySQL) as per code.gs
       const params = new URLSearchParams({action: 'syllabus_table', subject, username});
       let res = await fetch(scriptURL + '?' + params, {method: 'GET'});
       let data = await res.json();
@@ -678,14 +678,15 @@
       if(data.success && Array.isArray(data.syllabus)) {
         setProgress(data.percentage || 0);
         renderTable(data.syllabus);
+        showSyllabusError('');
       } else {
         document.getElementById('syllabusTableArea').innerHTML = '';
-        errorDiv.textContent = data.error || "Unable to fetch syllabus data.";
+        showSyllabusError(data.error || "Unable to fetch syllabus data.");
       }
     } catch (e) {
       showLoader(false);
       document.getElementById('syllabusTableArea').innerHTML = '';
-      errorDiv.textContent = "Network error!";
+      showSyllabusError("Network error!");
     }
   }
   function renderTable(rows) {

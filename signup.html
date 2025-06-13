@@ -5,6 +5,7 @@
   <title>PythonicEduTech|Sign Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1">
   <link rel="icon" href="logo.png" type="image/png">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <style>
     :root {
       --primary: #1e40af;
@@ -12,6 +13,7 @@
       --bg: #e2eafc;
       --card: #fff;
       --error: #f87171;
+      --error-bg: #fef2f2;
       --success: #16a34a;
       --shadow: 0 4px 24px 0 rgba(30,64,175,0.12);
     }
@@ -86,9 +88,9 @@
       0% { transform: scale(0.97) translateY(40px); opacity: 0;}
       100% { transform: scale(1) translateY(0); opacity: 1;}
     }
-    h2 { 
-      text-align: center; 
-      color: var(--primary); 
+    h2 {
+      text-align: center;
+      color: var(--primary);
       margin: 0 0 12px 0;
       font-size: 1.15rem;
       letter-spacing: 0.01em;
@@ -131,15 +133,48 @@
       background: linear-gradient(90deg, #23398c, #5c5cd6);
       outline: none;
     }
+
+    /* ======= POPUP ERROR STYLE ======= */
     .error {
       color: var(--error);
+      background: var(--error-bg);
+      border: 1.5px solid var(--error);
+      border-radius: 9px;
       text-align: center;
-      font-size: 0.97em;
-      min-height: 1.2em;
+      font-size: 0.99em;
+      min-height: 1.3em;
       margin-top: -8px;
-      margin-bottom: 2px;
+      margin-bottom: 6px;
       letter-spacing: 0.01em;
+      font-weight: 500;
+      box-shadow: 0 2px 10px #f871711a;
+      padding: 9px 12px 9px 12px;
+      display: none;
+      align-items: center;
+      gap: 0.5em;
+      justify-content: center;
+      max-width: 100%;
+      transition: opacity 0.2s, transform 0.2s;
+      position: relative;
+      z-index: 10;
     }
+    .error.show {
+      display: flex;
+      animation: errorPop 0.4s cubic-bezier(.46,1.48,.56,.9);
+    }
+    .error i {
+      font-size: 1.35em;
+      margin-right: 0.33em;
+      color: var(--error);
+      vertical-align: middle;
+    }
+    @keyframes errorPop {
+      0% { opacity: 0; transform: scale(0.94) translateY(12px);}
+      70% { opacity: 1; transform: scale(1.03) translateY(-5px);}
+      100% { opacity: 1; transform: scale(1) translateY(0);}
+    }
+    /* ======= END POPUP ERROR STYLE ======= */
+
     .login-link-container {
       width: 100%;
       display: flex;
@@ -179,7 +214,6 @@
       border-radius: 8px;
       box-shadow: 0 2px 12px #1e40af25;
     }
-    /* For large screens, reduce margins and prevent scroll */
     @media (min-width: 900px) {
       html, body {
         overflow: hidden !important;
@@ -251,9 +285,9 @@
         margin-top: 0;
         margin-bottom: 0;
       }
-      .main-container { 
-        max-width: 99vw; 
-        padding: 0.3em 1vw 0.3em 1vw; 
+      .main-container {
+        max-width: 99vw;
+        padding: 0.3em 1vw 0.3em 1vw;
         border-radius: 7px;
         margin: 12vw 2vw 4vw 2vw;
       }
@@ -269,7 +303,7 @@
         <img src="logo.png" alt="Pythonic EduTech Logo" id="companyLogoInside">
       </div>
       <h2>Create Your Account</h2>
-      <div class="error" id="errMsg"></div>
+      <div class="error" id="errMsg"><i class='bx bx-error-circle'></i><span id="errMsgText"></span></div>
       <form id="signupForm" autocomplete="on">
         <input type="text" id="fullname" placeholder="Full Name" required autocomplete="name" />
         <input type="text" id="username" placeholder="Username" required autocomplete="username" />
@@ -288,15 +322,26 @@
     <img src="loader.gif" alt="Loading..." class="loader-img">
   </div>
 <script>
-  // No change needed here, loader overlay is already matched to index.html
+  // Error popup styling and logic
+  function showError(msg) {
+    const errDiv = document.getElementById('errMsg');
+    const errSpan = document.getElementById('errMsgText');
+    if(msg) {
+      errSpan.textContent = msg;
+      errDiv.classList.add('show');
+    } else {
+      errSpan.textContent = '';
+      errDiv.classList.remove('show');
+    }
+  }
+
   function showLoader(show) {
     document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
   }
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxawyyj1CGEB0zSdxCWFFcsHTZJZndcPKOLyQ5y192QuxEZ7scFiFN0SG1yhRGCVE-x/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbwk6puFe4lPArFvDNvhQwZGWDClV1bnGyEVaqErlLA6Rz_FEcSr5SJbePXU04QnEKqV/exec";
   document.getElementById('signupForm').onsubmit = async (e) => {
     e.preventDefault();
-    const err = document.getElementById('errMsg');
-    err.textContent = '';
+    showError('');
     showLoader(true);
     const fullname = document.getElementById('fullname').value.trim();
     const username = document.getElementById('username').value.trim();
@@ -306,17 +351,17 @@
     const confirm = document.getElementById('confirm_password').value;
     if (!fullname || !username || !email || !phone || !password || !confirm) {
       showLoader(false);
-      err.textContent = "Please fill all fields.";
+      showError("Please fill all fields.");
       return;
     }
     if (password !== confirm) {
       showLoader(false);
-      err.textContent = "Passwords do not match.";
+      showError("Passwords do not match.");
       return;
     }
     if (!/^[0-9]{10,14}$/.test(phone)) {
       showLoader(false);
-      err.textContent = "Enter a valid phone number.";
+      showError("Enter a valid phone number.");
       return;
     }
     const params = new URLSearchParams({
@@ -336,11 +381,11 @@
         localStorage.setItem('fullname', fullname);
         window.location.href = "index.html"; // Redirect after successful signup
       } else {
-        err.textContent = data.error || "Signup failed";
+        showError(data.error || "Signup failed");
       }
     } catch (err2) {
       showLoader(false);
-      err.textContent = "Network error!";
+      showError("Network error!");
     }
   };
 </script>
