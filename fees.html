@@ -7,6 +7,7 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <link rel="icon" href="logo.png" type="image/png">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="config.js"></script>
   <style>
     :root {
       --primary: #1e40af;
@@ -41,8 +42,8 @@
       z-index: 100;
       position: relative;
     }
-    .header-spacer { height: 70px; }
-    @media (max-width: 700px) { .header-spacer { height: 50px; } }
+    .header-spacer { height: 20px; }
+    @media (max-width: 700px) { .header-spacer { height: 8px; } }
     .logo-mini {
       display: flex;
       align-items: center;
@@ -290,7 +291,9 @@
     <nav class="header-nav" id="headerNav">
       <div class="header-nav-list" id="headerNavList">
         <a href="syllabus.html" id="nav-syllabus">Syllabus</a>
+        <a href="assignments.html" id="nav-assignments">Assignments</a>
         <a href="fees.html" id="nav-fees">Fees</a>
+        <a href="user.html" id="nav-user">User</a>
         <button onclick="logout()" type="button">Logout</button>
       </div>
     </nav>
@@ -314,6 +317,7 @@
   <div class="loader-overlay" id="loaderOverlay" style="display:none;">
     <img src="loader.gif" alt="Loading..." class="loader-img">
   </div>
+<script src="config.js"></script>
 <script>
   // --- Inactivity Auto Logout (15 min) ---
   (function inactivityLogout() {
@@ -390,7 +394,9 @@
     // Highlight active nav
     const path = window.location.pathname;
     if (path.endsWith('syllabus.html')) document.getElementById('nav-syllabus').classList.add('active');
+    if (path.endsWith('assignments.html')) document.getElementById('nav-assignments').classList.add('active');
     if (path.endsWith('fees.html') || path.endsWith('dashboard.html')) document.getElementById('nav-fees').classList.add('active');
+    if (path.endsWith('user.html')) document.getElementById('nav-user').classList.add('active');
   })();
 
   function logout() { localStorage.clear(); window.location.href = 'index.html'; }
@@ -409,7 +415,7 @@
       errDiv.classList.remove('show');
     }
   }
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyGhGaVwaazi0x4qOwQfJazEKfkyIf4s2A0bcUZuZLadVuvmdgKtbIoR2me6kZq6gqq/exec";
+  // Use scriptURL from config.js
   function checkLogin() {
     const username = localStorage.getItem('username');
     const fullname = localStorage.getItem('fullname');

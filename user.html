@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile | PythonicEduTech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="logo.png" type="image/png">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="config.js"></script>
+  <style>
+    :root {
+      --primary: #1e40af;
+      --accent: #537fe7;
+      --bg: #e2eafc;
+      --card: #fff;
+      --shadow: 0 4px 24px 0 rgba(30,64,175,0.12);
+      --success: #16a34a;
+      --error: #f87171;
+      --error-bg: #fef2f2;
+    }
+    body {
+      background: var(--bg);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+    .header {
+      width: 100vw;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7em 2em;
+      box-sizing: border-box;
+      min-height: 54px;
+      z-index: 100;
+      position: relative;
+      box-shadow: 0 6px 20px #1e40af18;
+    }
+    .header-spacer { height: 20px; }
+    @media (max-width: 700px) { .header-spacer { height: 8px; } }
+    .logo-mini {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      font-size: 1.19em;
+      font-weight: bold;
+      text-decoration: none;
+      color: #fff;
+    }
+    .logo-mini img {
+      height: 34px;
+      width: 34px;
+      object-fit: contain;
+      border-radius: 7px;
+      background: #fff;
+      padding: 3px;
+      box-shadow: 0 1px 6px #1e40af22;
+    }
+    .header-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 38px;
+      height: 38px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      z-index: 120;
+      position: relative;
+      margin-left: auto;
+      margin-right: 0.5em;
+    }
+    .header-hamburger span,
+    .header-hamburger span::before,
+    .header-hamburger span::after {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      border-radius: 2px;
+      position: absolute;
+      left: 0;
+      transition: all 0.32s cubic-bezier(.4,2,.6,1);
+      content: '';
+    }
+    .header-hamburger span {
+      position: relative;
+      margin-top: 0;
+      margin-bottom: 0;
+      background: none;
+      height: 3px;
+      width: 25px;
+    }
+    .header-hamburger span::before { top: -8px; }
+    .header-hamburger span::after  { top: 8px; }
+    .header-hamburger:not(.open) span { background: #fff; }
+    .header-hamburger:not(.open) span::before,
+    .header-hamburger:not(.open) span::after {
+      background: #fff;
+      left: 0;
+      width: 25px;
+    }
+    .header-hamburger.open span { background: transparent; }
+    .header-hamburger.open span::before {
+      transform: rotate(45deg) translateY(0px); top: 0;
+    }
+    .header-hamburger.open span::after {
+      transform: rotate(-45deg) translateY(0px); top: 0;
+    }
+    .header-nav { display: flex; gap: 1.3em; align-items: center; }
+    .header-nav-list { display: flex; flex-direction: row; gap: 1.3em; }
+    .header-nav a, .header-nav button {
+      color: #fff; background: none; font-size: 1.01em; font-weight: 500;
+      border: none; outline: none; padding: 8px 13px; border-radius: 6px;
+      cursor: pointer; text-decoration: none; transition: background 0.17s, color 0.14s;
+    }
+    .header-nav a.active, .header-nav a:hover, .header-nav button:focus, .header-nav button:hover {
+      background: #ffffff22; color: #e2eafc;
+    }
+    @media (max-width: 700px) {
+      .header { padding: 0.6em 0.7em; min-height: 44px; }
+      .logo-mini img { height: 27px; width: 27px; border-radius: 5px; padding: 2px; }
+      .logo-mini { font-size: 1em; gap: 0.4em; }
+      .header-hamburger { display: flex; }
+      .header-nav {
+        display: block;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--card);
+        box-shadow: 0 4px 24px #1e40af22;
+        padding: 0;
+        z-index: 150;
+        color: var(--primary);
+      }
+      .header-nav-list {
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+        padding: 0.9em 0 0.9em 0;
+        width: 100%;
+        display: none;
+        border-radius: 0 0 12px 12px;
+        overflow: hidden;
+        background: var(--card);
+        box-shadow: 0 8px 24px #1e40af22;
+      }
+      .header-nav-list.open {
+        display: flex;
+        animation: dropdownShow 0.23s cubic-bezier(.4,2,.6,1);
+      }
+      @keyframes dropdownShow {
+        from { opacity: 0; transform: translateY(-10px);}
+        to { opacity: 1; transform: none;}
+      }
+      .header-nav a, .header-nav button {
+        color: var(--primary);
+        background: none;
+        font-size: 1.12em;
+        font-weight: 500;
+        padding: 13px 22px;
+        width: 100%;
+        border-radius: 0;
+      }
+      .header-nav a.active, .header-nav a:hover, .header-nav button:focus, .header-nav button:hover {
+        background: var(--bg);
+        color: var(--primary);
+      }
+    }
+    .profile-container {
+      max-width: 460px;
+      margin: 1.5em auto 2em auto;
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 2.2em 2em 2.2em 2em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2em;
+      animation: fadeIn 0.6s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px);}
+      to { opacity: 1; transform: none;}
+    }
+    .profile-img-box {
+      position: relative;
+      margin-bottom: 0.5em;
+      width: 110px;
+      height: 110px;
+    }
+    .profile-img {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #e2eafc;
+      box-shadow: 0 2px 16px #1e40af28;
+      border: 3px solid var(--accent);
+      display: block;
+      transition: box-shadow 0.2s;
+    }
+    .profile-img:hover {
+      box-shadow: 0 4px 28px #537fe733, 0 2px 6px #1e40af33;
+    }
+    .profile-heading {
+      color: var(--primary);
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 0.8em;
+      text-align: center;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 4px #537fe71c;
+    }
+    .profile-table {
+      width: 100%;
+      font-size: 1.13em;
+      margin-top: 0.5em;
+      border-collapse: separate;
+      border-spacing: 0 0.6em;
+    }
+    .profile-table td {
+      padding: 7px 0.7em 7px 0.7em;
+      color: #375;
+    }
+    .profile-table td:first-child {
+      color: var(--primary);
+      font-weight: bold;
+      width: 140px;
+    }
+    .score-badge {
+      background: linear-gradient(90deg,#16a34a,#537fe7);
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      padding: 6px 18px;
+      font-size: 1.18em;
+      letter-spacing: 0.04em;
+      box-shadow: 0 2px 10px #16a34a22;
+      border: none;
+      margin-left: 0;
+      display: inline-block;
+      min-width: 44px;
+      text-align: center;
+      transition: background 0.22s;
+    }
+    .error {
+      color: var(--error);
+      background: var(--error-bg);
+      border: 1.5px solid var(--error);
+      border-radius: 9px;
+      font-size: 1.09em;
+      font-weight: 500;
+      text-align: center;
+      min-height: 1.3em;
+      margin: 1em 0 0.7em 0;
+      letter-spacing: 0.01em;
+      padding: 9px 13px 9px 13px;
+      box-shadow: 0 2px 10px #f871711a;
+      display: none;
+      align-items: center;
+      gap: 0.5em;
+      justify-content: center;
+      max-width: 100%;
+      transition: opacity 0.2s, transform 0.2s;
+      position: relative;
+      z-index: 10;
+    }
+    .error.show {
+      display: flex;
+      animation: errorPop 0.4s cubic-bezier(.46,1.48,.56,.9);
+    }
+    .loader-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.75);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader-img {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 2px 16px #1e40af25;
+    }
+    @media (max-width: 650px) {
+      .profile-container { 
+        max-width: 97vw;
+        padding: 1.1em 6vw 1.1em 6vw;
+      }
+      .profile-img-box { width: 82px; height: 82px;}
+      .profile-img { width: 82px; height: 82px;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a class="logo-mini" href="syllabus.html">
+      <img src="logo.png" alt="Logo" />
+      <span>Pythonic EduTech</span>
+    </a>
+    <button class="header-hamburger" id="headerHamburger" aria-label="Open navigation" aria-expanded="false">
+      <span></span>
+    </button>
+    <nav class="header-nav" id="headerNav">
+      <div class="header-nav-list" id="headerNavList">
+        <a href="syllabus.html" id="nav-syllabus">Syllabus</a>
+        <a href="assignments.html" id="nav-assignments">Assignments</a>
+        <a href="fees.html" id="nav-fees">Fees</a>
+        <a href="user.html" id="nav-user">User</a>
+        <button onclick="logout()" type="button">Logout</button>
+      </div>
+    </nav>
+  </header>
+  <div class="header-spacer"></div>
+  <div class="profile-container" id="profileContainer">
+    <div class="profile-img-box">
+      <img src="default-profile.png" class="profile-img" id="profileImg" alt="Profile Picture" />
+      <!-- No upload button or input here -->
+    </div>
+    <div class="profile-heading">User Profile</div>
+    <table class="profile-table">
+      <tbody>
+        <tr><td>Name</td><td id="profileName">-</td></tr>
+        <tr><td>Username</td><td id="profileUsername">-</td></tr>
+        <tr><td>Email</td><td id="profileEmail">-</td></tr>
+        <tr>
+          <td>Total Score</td>
+          <td><span class="score-badge" id="profileScoreBadge">-</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="error" id="profileError"></div>
+  </div>
+  <div class="loader-overlay" id="loaderOverlay">
+    <img src="loader.gif" alt="Loading..." class="loader-img">
+  </div>
+  <script>
+    // Hamburger Menu Logic
+    (function(){
+      const path = window.location.pathname;
+      if (path.endsWith('syllabus.html')) document.getElementById('nav-syllabus').classList.add('active');
+      if (path.endsWith('assignments.html')) document.getElementById('nav-assignments').classList.add('active');
+      if (path.endsWith('fees.html') || path.endsWith('dashboard.html')) document.getElementById('nav-fees').classList.add('active');
+      if (path.endsWith('user.html')) document.getElementById('nav-user').classList.add('active');
+      const hamburger = document.getElementById('headerHamburger');
+      const navList = document.getElementById('headerNavList');
+      function isMobile() { return window.innerWidth <= 700; }
+      function closeMenu() {
+        hamburger.classList.remove('open');
+        navList.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+      function openMenu() {
+        hamburger.classList.add('open');
+        navList.classList.add('open');
+        hamburger.setAttribute('aria-expanded', 'true');
+      }
+      hamburger.addEventListener('click', function(e) {
+        if (!isMobile()) return;
+        if (navList.classList.contains('open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+        e.stopPropagation();
+      });
+      navList.querySelectorAll('a,button').forEach(el => {
+        el.addEventListener('click', function() {
+          if(isMobile()) closeMenu();
+        });
+      });
+      window.addEventListener('resize', function() {
+        if(isMobile()) {
+          navList.classList.remove('open');
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        } else {
+          navList.classList.add('open');
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        }
+      });
+      if(isMobile()) {
+        navList.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      } else {
+        navList.classList.add('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    })();
+    function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+
+    // Loader function
+    function showLoader(show) {
+      document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
+    }
+
+    // Profile logic
+    async function loadProfile() {
+      showLoader(true);
+      try {
+        const username = localStorage.getItem('username');
+        if(!username) {
+          window.location.href = "index.html";
+          return;
+        }
+        // Get all user info from backend
+        const res = await fetch(scriptURL + `?action=get_user_profile&username=${encodeURIComponent(username)}`);
+        const data = await res.json();
+        if(data.success && data.profile) {
+          document.getElementById('profileUsername').textContent = data.profile.username || "-";
+          document.getElementById('profileName').textContent = data.profile.name || "-";
+          document.getElementById('profileEmail').textContent = data.profile.email || "-";
+          // Profile image
+          if (data.profile.profile_image) {
+            document.getElementById('profileImg').src = data.profile.profile_image;
+            localStorage.setItem('profile_image', data.profile.profile_image);
+          }
+          // Score
+          let score = data.profile.total_score || 0;
+          document.getElementById('profileScoreBadge').textContent = score;
+          showProfileError("");
+        } else {
+          showProfileError(data.error || "Failed to load profile.");
+        }
+      } catch (e) {
+        showProfileError("Failed to load profile. Please try again.");
+      }
+      showLoader(false);
+    }
+
+    function showProfileError(msg) {
+      const el = document.getElementById('profileError');
+      if(!msg) {
+        el.textContent = "";
+        el.classList.remove('show');
+      } else {
+        el.textContent = msg;
+        el.classList.add('show');
+      }
+    }
+
+    // On page load
+    window.onload = function() {
+      const username = localStorage.getItem('username');
+      if(!username) {
+        window.location.href = "index.html";
+        return;
+      }
+      // load last profile image if available
+      const img = localStorage.getItem('profile_image');
+      if(img) document.getElementById('profileImg').src = img;
+      loadProfile();
+    };
+  </script>
+</body>
+</html>

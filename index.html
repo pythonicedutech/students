@@ -411,6 +411,7 @@
   <div class="loader-overlay" id="loaderOverlay" style="display:none;">
     <img src="loader.gif" alt="Loading..." class="loader-img">
   </div>
+<script src="config.js"></script>
 <script>
   // Password eye toggle
   const passwordInput = document.getElementById('password');
@@ -439,7 +440,6 @@
     }
   }
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyGhGaVwaazi0x4qOwQfJazEKfkyIf4s2A0bcUZuZLadVuvmdgKtbIoR2me6kZq6gqq/exec";
   document.getElementById('loginForm').onsubmit = async (e) => {
     e.preventDefault();
     showError('');

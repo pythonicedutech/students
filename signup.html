@@ -223,7 +223,7 @@
     .otp-popup {
       background: #fff;
       border-radius: 14px;
-      padding: 2.6em 2.5em 2em 2.5em; /* bigger popup */
+      padding: 2.6em 2.5em 2em 2.5em;
       box-shadow: 0 8px 42px #1e40af33, 0 2px 8px #aecbfa1a;
       min-width: 340px;
       max-width: 99vw;
@@ -366,6 +366,7 @@
       <button type="button" class="resend-link" onclick="resendOtp()">Resend OTP</button>
     </div>
   </div>
+<script src="config.js"></script>
 <script>
   // Error popup styling and logic
   function showError(msg) {
@@ -469,7 +470,6 @@
       });
   }
   // --- SIGNUP LOGIC ---
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyGhGaVwaazi0x4qOwQfJazEKfkyIf4s2A0bcUZuZLadVuvmdgKtbIoR2me6kZq6gqq/exec";
   document.getElementById('signupForm').onsubmit = async (e) => {
     e.preventDefault();
     showError('');

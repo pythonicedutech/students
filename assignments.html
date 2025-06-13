@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Assignments | PythonicEduTech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="logo.png" type="image/png">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="config.js"></script>
+  <style>
+    :root {
+      --primary: #1e40af;
+      --accent: #537fe7;
+      --bg: #e2eafc;
+      --card: #fff;
+      --shadow: 0 4px 24px 0 rgba(30,64,175,0.12);
+      --success: #16a34a;
+      --error: #f87171;
+      --error-bg: #fef2f2;
+      --pending: #facc15;
+      --ongoing: #38bdf8;
+      --completed: #16a34a;
+    }
+    body { 
+      background: var(--bg); 
+      font-family: 'Segoe UI', Arial, sans-serif; 
+      margin: 0;
+      min-height: 100vh;
+    }
+    .header {
+      width: 100vw;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7em 2em;
+      box-sizing: border-box;
+      min-height: 54px;
+      z-index: 100;
+      position: relative;
+      box-shadow: 0 6px 20px #1e40af18;
+    }
+    .header-spacer { height: 20px; }
+    @media (max-width: 700px) { .header-spacer { height: 8px; } }
+    .logo-mini {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      font-size: 1.19em;
+      font-weight: bold;
+      text-decoration: none;
+      color: #fff;
+    }
+    .logo-mini img {
+      height: 34px;
+      width: 34px;
+      object-fit: contain;
+      border-radius: 7px;
+      background: #fff;
+      padding: 3px;
+      box-shadow: 0 1px 6px #1e40af22;
+    }
+    .header-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 38px;
+      height: 38px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      z-index: 120;
+      position: relative;
+      margin-left: auto;
+      margin-right: 0.5em;
+    }
+    .header-hamburger span,
+    .header-hamburger span::before,
+    .header-hamburger span::after {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      border-radius: 2px;
+      position: absolute;
+      left: 0;
+      transition: all 0.32s cubic-bezier(.4,2,.6,1);
+      content: '';
+    }
+    .header-hamburger span {
+      position: relative;
+      margin-top: 0;
+      margin-bottom: 0;
+      background: none;
+      height: 3px;
+      width: 25px;
+    }
+    .header-hamburger span::before { top: -8px; }
+    .header-hamburger span::after  { top: 8px; }
+    .header-hamburger:not(.open) span { background: #fff; }
+    .header-hamburger:not(.open) span::before,
+    .header-hamburger:not(.open) span::after {
+      background: #fff;
+      left: 0;
+      width: 25px;
+    }
+    .header-hamburger.open span { background: transparent; }
+    .header-hamburger.open span::before {
+      transform: rotate(45deg) translateY(0px); top: 0;
+    }
+    .header-hamburger.open span::after {
+      transform: rotate(-45deg) translateY(0px); top: 0;
+    }
+    .header-nav { display: flex; gap: 1.3em; align-items: center; }
+    .header-nav-list { display: flex; flex-direction: row; gap: 1.3em; }
+    .header-nav a, .header-nav button {
+      color: #fff; background: none; font-size: 1.01em; font-weight: 500;
+      border: none; outline: none; padding: 8px 13px; border-radius: 6px;
+      cursor: pointer; text-decoration: none; transition: background 0.17s, color 0.14s;
+    }
+    .header-nav a.active, .header-nav a:hover, .header-nav button:focus, .header-nav button:hover {
+      background: #ffffff22; color: #e2eafc;
+    }
+    @media (max-width: 700px) {
+      .header { padding: 0.6em 0.7em; min-height: 44px; }
+      .logo-mini img { height: 27px; width: 27px; border-radius: 5px; padding: 2px; }
+      .logo-mini { font-size: 1em; gap: 0.4em; }
+      .header-hamburger { display: flex; }
+      .header-nav {
+        display: block;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--card);
+        box-shadow: 0 4px 24px #1e40af22;
+        padding: 0;
+        z-index: 150;
+        color: var(--primary);
+      }
+      .header-nav-list {
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+        padding: 0.9em 0 0.9em 0;
+        width: 100%;
+        display: none;
+        border-radius: 0 0 12px 12px;
+        overflow: hidden;
+        background: var(--card);
+        box-shadow: 0 8px 24px #1e40af22;
+      }
+      .header-nav-list.open {
+        display: flex;
+        animation: dropdownShow 0.23s cubic-bezier(.4,2,.6,1);
+      }
+      @keyframes dropdownShow {
+        from { opacity: 0; transform: translateY(-10px);}
+        to { opacity: 1; transform: none;}
+      }
+      .header-nav a, .header-nav button {
+        color: var(--primary);
+        background: none;
+        font-size: 1.12em;
+        font-weight: 500;
+        padding: 13px 22px;
+        width: 100%;
+        border-radius: 0;
+      }
+      .header-nav a.active, .header-nav a:hover, .header-nav button:focus, .header-nav button:hover {
+        background: var(--bg);
+        color: var(--primary);
+      }
+    }
+    .container { 
+      max-width: 650px; 
+      margin: 2em auto; 
+      background: var(--card); 
+      border-radius: 16px; 
+      box-shadow: var(--shadow); 
+      padding: 2em 2.2em;
+    }
+    h2 { color: var(--primary); margin-bottom: 1em; text-align: center; }
+    .section-title { color: var(--accent); font-weight: 700; margin-top: 1.8em; margin-bottom: 0.7em; font-size: 1.1em;}
+    .assignment-card {
+      border: 1.5px solid var(--accent);
+      border-radius: 14px;
+      margin-bottom: 1.2em;
+      padding: 1.2em 1em 1em 1em;
+      background: #f8fafc;
+      box-shadow: 0 2px 8px #537fe71a;
+    }
+    .assignment-topic {
+      font-weight: 700; color: #23398c; font-size: 1.13em; margin-bottom: 0.3em;
+    }
+    .assignment-question { margin-bottom: 0.6em; color: #444; }
+    .assignment-meta { font-size: 0.97em; color: #64748b; margin-bottom: 0.7em;}
+    .upload-section { margin-top: 0.9em; display: flex; gap: 12px; align-items: center;}
+    .score-section { margin-top: 0.7em; color: var(--success); font-weight: 600; }
+    .feedback-section { color: var(--accent); margin-top: 0.2em; font-size: 0.97em;}
+    .custom-btn, .url-btn {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 8px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s;
+      font-size: 1em;
+    }
+    .url-btn { background: linear-gradient(90deg, var(--accent), var(--primary)); }
+    .custom-btn:disabled, .url-btn:disabled { background: #b5c8f6; cursor: not-allowed; }
+    .file-link { color: var(--primary); text-decoration: underline; font-size: 0.97em; }
+    .toggle-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1em;
+      margin-bottom: 0.6em;
+      display: flex;
+      align-items: center;
+      gap: 0.25em;
+    }
+    .toggle-btn:focus { outline: 2px solid var(--accent); }
+    .modal-bg {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(30, 64, 175, 0.11);
+      justify-content: center; align-items: center;
+    }
+    .modal-bg.active { display: flex; }
+    .url-modal {
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: 0 6px 30px #1e40af33;
+      padding: 2.2em 2.2em 2em 2.2em;
+      min-width: 320px;
+      max-width: 96vw;
+      animation: popIn 0.23s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.92); opacity: 0.2; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .url-modal h3 { 
+      margin-top: 0; 
+      color: var(--primary); 
+      font-size: 1.18em; 
+      margin-bottom: 1em;
+      font-weight: 700;
+      width: 100%;
+    }
+    .url-modal input[type="url"] {
+      width: 95%;
+      padding: 12px 14px;
+      font-size: 1.01em;
+      border-radius: 8px;
+      border: 1.5px solid #b5c8f6;
+      margin-bottom: 1.1em;
+      margin-top: 0.7em;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .url-modal .modal-actions {
+      text-align: center;
+      width: 100%;
+    }
+    .url-modal .url-submit-btn {
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 8px 22px;
+      font-weight: 600;
+      font-size: 1em;
+      cursor: pointer;
+      margin-left: 0.7em;
+      margin-top: 0.2em;
+    }
+    .url-modal .url-cancel-btn {
+      background: var(--bg);
+      color: var(--primary);
+      font-weight: 600;
+      border: none;
+      border-radius: 7px;
+      padding: 8px 18px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-right: 0.5em;
+      margin-top: 0.2em;
+    }
+    .url-modal .url-cancel-btn:hover {
+      background: #e7f0ff;
+    }
+    .url-modal .url-submit-btn:disabled {
+      background: #b5c8f6;
+      cursor: not-allowed;
+    }
+    #modalError {
+      color: var(--error);
+      font-size:.97em;
+      margin-top:0.7em;
+      display:none;
+      text-align:center;
+      width:100%;
+    }
+    .loader-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.75);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader-img {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 2px 16px #1e40af25;
+    }
+    .popup-modal-bg {
+      display: none;
+      position: fixed;
+      z-index: 4000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(30, 64, 175, 0.10);
+      justify-content: center; align-items: center;
+      transition: opacity 0.18s;
+    }
+    .popup-modal-bg.active { display: flex; }
+    .popup-modal {
+      min-width: 280px;
+      max-width: 88vw;
+      padding: 2.2em 2.1em 1.7em 2.1em;
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 8px 36px #1e40af44;
+      text-align: center;
+      animation: popIn 0.23s;
+      border: 2px solid;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1em;
+    }
+    .popup-modal.success {
+      border-color: var(--success);
+    }
+    .popup-modal.error {
+      border-color: var(--error);
+    }
+    .popup-modal .popup-icon {
+      font-size: 2.3em;
+      margin-bottom: 0.15em;
+    }
+    .popup-modal.success .popup-icon {
+      color: var(--success);
+    }
+    .popup-modal.error .popup-icon {
+      color: var(--error);
+    }
+    .popup-modal .popup-title {
+      font-size: 1.18em;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 0.3em;
+    }
+    .popup-modal .popup-message {
+      font-size: 1.04em;
+      color: #444;
+      margin-bottom: 0.1em;
+      width: 100%;
+    }
+    @media (max-width: 650px) {
+      .container { 
+        max-width: 98vw; 
+        padding: 1.1em 4vw;
+      }
+      .url-modal { padding: 1.1em 1.2em; min-width: 0; }
+      .popup-modal { padding: 1.1em 1.2em 1em 1.2em; min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a class="logo-mini" href="syllabus.html">
+      <img src="logo.png" alt="Logo" />
+      <span>Pythonic EduTech</span>
+    </a>
+    <button class="header-hamburger" id="headerHamburger" aria-label="Open navigation" aria-expanded="false">
+      <span></span>
+    </button>
+    <nav class="header-nav" id="headerNav">
+      <div class="header-nav-list" id="headerNavList">
+        <a href="syllabus.html" id="nav-syllabus">Syllabus</a>
+        <a href="assignments.html" id="nav-assignments">Assignments</a>
+        <a href="fees.html" id="nav-fees">Fees</a>
+        <a href="user.html" id="nav-user">User</a>
+        <button onclick="logout()" type="button">Logout</button>
+      </div>
+    </nav>
+  </header>
+  <div class="header-spacer"></div>
+  <div class="container">
+    <h2>Your Assignments</h2>
+    <div class="section-title">Pending Assignments</div>
+    <div id="assignmentsList"></div>
+    <button class="toggle-btn" id="toggleCompleted"><i class='bx bx-chevron-down'></i> Show Completed Assignments</button>
+    <div id="completedSection" style="display:none">
+      <div class="section-title">Completed Assignments</div>
+      <div id="completedAssignments"></div>
+    </div>
+  </div>
+  <!-- URL Modal -->
+  <div class="modal-bg" id="urlModalBg">
+    <div class="url-modal">
+      <h3>Submit Assignment URL</h3>
+      <input type="url" id="modalUrlInput" placeholder="Paste assignment URL, e.g. https://colab.research.google.com/..." />
+      <div class="modal-actions">
+        <button class="url-cancel-btn" type="button" id="modalCancelBtn">Cancel</button>
+        <button class="url-submit-btn" type="button" id="modalSubmitBtn">Submit</button>
+      </div>
+      <div id="modalError"></div>
+    </div>
+  </div>
+  <!-- Popup Modal for Success/Error -->
+  <div class="popup-modal-bg" id="popupModalBg">
+    <div class="popup-modal" id="popupModal">
+      <div class="popup-icon"></div>
+      <div class="popup-title"></div>
+      <div class="popup-message"></div>
+    </div>
+  </div>
+  <!-- Loader Overlay -->
+  <div class="loader-overlay" id="loaderOverlay">
+    <img src="loader.gif" alt="Loading..." class="loader-img">
+  </div>
+  <script>
+    // Hamburger Menu Logic (unchanged)
+    (function(){
+      const path = window.location.pathname;
+      if (path.endsWith('syllabus.html')) document.getElementById('nav-syllabus').classList.add('active');
+      if (path.endsWith('assignments.html')) document.getElementById('nav-assignments').classList.add('active');
+      if (path.endsWith('fees.html') || path.endsWith('dashboard.html')) document.getElementById('nav-fees').classList.add('active');
+      if (path.endsWith('user.html')) document.getElementById('nav-user').classList.add('active');
+      const hamburger = document.getElementById('headerHamburger');
+      const navList = document.getElementById('headerNavList');
+      function isMobile() { return window.innerWidth <= 700; }
+      function closeMenu() {
+        hamburger.classList.remove('open');
+        navList.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+      function openMenu() {
+        hamburger.classList.add('open');
+        navList.classList.add('open');
+        hamburger.setAttribute('aria-expanded', 'true');
+      }
+      hamburger.addEventListener('click', function(e) {
+        if (!isMobile()) return;
+        if (navList.classList.contains('open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+        e.stopPropagation();
+      });
+      navList.querySelectorAll('a,button').forEach(el => {
+        el.addEventListener('click', function() {
+          if(isMobile()) closeMenu();
+        });
+      });
+      window.addEventListener('resize', function() {
+        if(isMobile()) {
+          navList.classList.remove('open');
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        } else {
+          navList.classList.add('open');
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        }
+      });
+      if(isMobile()) {
+        navList.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      } else {
+        navList.classList.add('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    })();
+    function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+
+    // Loader functions
+    function showLoader(show) {
+      document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
+    }
+
+    // Popup Modal Logic
+    function showPopup({type, title, message}) {
+      const popupBg = document.getElementById('popupModalBg');
+      const popup = document.getElementById('popupModal');
+      const icon = popup.querySelector('.popup-icon');
+      const titleDiv = popup.querySelector('.popup-title');
+      const messageDiv = popup.querySelector('.popup-message');
+
+      popup.className = `popup-modal ${type}`;
+      icon.innerHTML = type === "success" ? "<i class='bx bx-check-circle'></i>" : "<i class='bx bx-error-circle'></i>";
+      titleDiv.textContent = title || (type === "success" ? "Success" : "Error");
+      messageDiv.textContent = message || "";
+
+      popupBg.classList.add('active');
+      setTimeout(() => {
+        popupBg.classList.remove('active');
+      }, 2500);
+    }
+
+    // scriptURL comes from config.js
+    const userName = localStorage.getItem('username') || "";
+
+    // Modal state
+    let modalTopic = null;
+
+    // Show/hide completed section
+    const toggleBtn = document.getElementById('toggleCompleted');
+    const completedSection = document.getElementById('completedSection');
+    let completedVisible = false;
+    toggleBtn.onclick = function() {
+      completedVisible = !completedVisible;
+      completedSection.style.display = completedVisible ? "block" : "none";
+      toggleBtn.innerHTML = `<i class='bx bx-chevron-${completedVisible ? "up" : "down"}'></i> ${completedVisible ? "Hide" : "Show"} Completed Assignments`;
+    };
+
+    // Date formatting to DD/MM/YYYY
+    function formatDateDMY(dateStr) {
+      if (!dateStr) return '—';
+      if (!isNaN(dateStr)) {
+        var date = new Date(Math.round((dateStr - 25569) * 86400 * 1000));
+        return ("0" + date.getDate()).slice(-2) + "/" + ("0"+(date.getMonth()+1)).slice(-2) + "/" + date.getFullYear();
+      }
+      let d = new Date(dateStr.replace(/-/g, '/'));
+      if (!isNaN(d.getTime())) {
+        return ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2) + "/" + d.getFullYear();
+      }
+      return dateStr;
+    }
+
+    // Load assignments and submission status
+    async function loadAssignments() {
+      showLoader(true);
+      try {
+        const res = await fetch(scriptURL + `?action=get_user_assignments&username=${encodeURIComponent(userName)}`);
+        const data = await res.json();
+        const assignmentsList = document.getElementById('assignmentsList');
+        const completedAssignments = document.getElementById('completedAssignments');
+        assignmentsList.innerHTML = "";
+        completedAssignments.innerHTML = "";
+
+        data.assignments.forEach(asg => {
+          const sub = data.submissions[asg.topic] || {};
+          const completed = (sub.url) && (sub.score !== undefined && sub.score !== null && sub.score !== "");
+          const card = document.createElement('div');
+          card.className = 'assignment-card';
+
+          let submissionHtml = '';
+          if (sub.url) {
+            submissionHtml += `<a href="${sub.url}" class="file-link" target="_blank">View URL</a>`;
+          }
+
+          card.innerHTML = `
+            <div class="assignment-topic">${asg.topic}</div>
+            <div class="assignment-question">${asg.question}</div>
+            <div class="assignment-meta">
+              Due: ${formatDateDMY(asg.due) || '—'} | Max Score: ${asg.max_score || '—'}
+            </div>
+            <div class="upload-section" id="upload-${asg.topic.replace(/\s+/g,'_')}">
+              ${
+                (sub.url)
+                  ? `${submissionHtml}
+                    ${completed ? "" : `
+                      <button class="url-btn" data-topic="${asg.topic}" data-type="url">Submit/Resubmit URL</button>
+                    `}`
+                  : `
+                    <button class="url-btn" data-topic="${asg.topic}" data-type="url">Submit URL</button>
+                  `
+              }
+            </div>
+            <div class="score-section">${sub.score ? `Score: ${sub.score}/${asg.max_score}` : ''}</div>
+            <div class="feedback-section">${sub.feedback ? `Feedback: ${sub.feedback}` : ''}</div>
+          `;
+
+          if (completed) {
+            completedAssignments.appendChild(card);
+          } else {
+            assignmentsList.appendChild(card);
+          }
+        });
+
+        document.querySelectorAll('.url-btn').forEach(btn => {
+          btn.onclick = function() {
+            modalTopic = btn.getAttribute('data-topic');
+            showUrlModal();
+          }
+        });
+      } catch (e) {
+        showPopup({type: "error", title: "Network Error", message: "Network error while loading assignments."});
+      }
+      showLoader(false);
+    }
+
+    // Modal logic
+    const urlModalBg = document.getElementById('urlModalBg');
+    const modalUrlInput = document.getElementById('modalUrlInput');
+    const modalSubmitBtn = document.getElementById('modalSubmitBtn');
+    const modalCancelBtn = document.getElementById('modalCancelBtn');
+    const modalError = document.getElementById('modalError');
+    function showUrlModal() {
+      urlModalBg.classList.add('active');
+      modalUrlInput.value = '';
+      modalError.textContent = '';
+      modalError.style.display = 'none';
+      setTimeout(() => { modalUrlInput.focus(); }, 100);
+    }
+    function hideUrlModal() {
+      urlModalBg.classList.remove('active');
+      modalTopic = null;
+    }
+
+    modalCancelBtn.onclick = hideUrlModal;
+    urlModalBg.onclick = function(e) {
+      if (e.target === urlModalBg) hideUrlModal();
+    };
+    modalUrlInput.onkeydown = function(e) {
+      if (e.key === 'Enter') {
+        modalSubmitBtn.click();
+        e.preventDefault();
+      }
+    };
+
+    modalSubmitBtn.onclick = async function() {
+      const url = modalUrlInput.value.trim();
+      if (!url || !/^https?:\/\/\S+$/i.test(url)) {
+        modalError.textContent = "Enter a valid URL (starting with http:// or https://)";
+        modalError.style.display = 'block';
+        return;
+      }
+      modalSubmitBtn.disabled = true;
+      showLoader(true);
+      try {
+        const formData = new FormData();
+        formData.append('username', userName);
+        formData.append('topic', modalTopic);
+        formData.append('url', url);
+        const res = await fetch(scriptURL, {method:'POST', body:formData});
+        const data = await res.json();
+        if (data.success) {
+          showPopup({type:"success", message:"Assignment URL submitted successfully!"});
+          hideUrlModal();
+          loadAssignments();
+        } else {
+          showPopup({type:"error", message: data.error || "Submission failed."});
+        }
+      } catch (err) {
+        showPopup({type:"error", message: "Network error."});
+      }
+      modalSubmitBtn.disabled = false;
+      showLoader(false);
+    };
+
+    loadAssignments();
+  </script>
+</body>
+</html>
