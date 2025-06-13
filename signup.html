@@ -223,10 +223,10 @@
     .otp-popup {
       background: #fff;
       border-radius: 14px;
-      padding: 2.2em 1.5em 1.4em 1.5em; /* more top padding for close button */
-      box-shadow: 0 6px 32px #1e40af33, 0 1.5px 6px #aecbfa1a;
-      min-width: 250px;
-      max-width: 95vw;
+      padding: 2.6em 2.5em 2em 2.5em; /* bigger popup */
+      box-shadow: 0 8px 42px #1e40af33, 0 2px 8px #aecbfa1a;
+      min-width: 340px;
+      max-width: 99vw;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -235,18 +235,18 @@
     }
     .otp-popup .close-otp-popup {
       position: absolute;
-      top: 16px;
-      right: 16px;
+      top: 20px;
+      right: 24px;
       background: none;
       border: none;
-      font-size: 1.4em;
+      font-size: 1.7em;
       color: #aaa;
       cursor: pointer;
       z-index: 10;
       padding: 0;
       line-height: 1;
-      width: 32px;
-      height: 32px;
+      width: 38px;
+      height: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -259,9 +259,9 @@
       border-radius: 50%;
     }
     .otp-popup h3 {
-      margin: 0.5em 0 0.6em 0;
+      margin: 0.7em 0 1em 0;
       color: var(--primary);
-      font-size: 1.14em;
+      font-size: 1.23em;
       font-weight: 700;
       letter-spacing: 0.01em;
       text-align: center;
@@ -269,13 +269,13 @@
     }
     .otp-popup input[type="text"] {
       letter-spacing: 0.22em;
-      font-size: 1.13em;
+      font-size: 1.32em;
       text-align: center;
-      margin-bottom: 0.8em;
-      border: 1.5px solid #cfd8dc;
-      border-radius: 7px;
-      padding: 10px;
-      width: 160px;
+      margin-bottom: 1.1em;
+      border: 1.7px solid #cfd8dc;
+      border-radius: 8px;
+      padding: 14px;
+      width: 205px;
       background: #f8fafc;
       outline: none;
       transition: border-color .22s;
@@ -283,7 +283,9 @@
     .otp-popup input[type="text"]:focus { border-color: var(--primary);}
     .otp-popup button {
       width: 100%;
-      margin: 0.5em 0 0 0;
+      margin: 0.7em 0 0 0;
+      font-size: 1.09em;
+      padding: 12px 0;
     }
     .otp-popup .otp-error {
       color: var(--error);
@@ -305,6 +307,18 @@
       text-decoration: underline;
       cursor: pointer;
       margin-top: 0.4em;
+    }
+    @media (max-width: 600px) {
+      .otp-popup {
+        min-width: 90vw;
+        padding: 1.5em 2vw 1.2em 2vw;
+      }
+      .otp-popup input[type="text"] {
+        width: 90vw;
+        min-width: 0;
+        max-width: 270px;
+        padding: 10px;
+      }
     }
     @media (min-width: 900px) { html, body { overflow: hidden !important; } .main-center-area { margin-top: 40px; margin-bottom: 0; } .main-container { margin-top: 0; margin-bottom: 0; max-width: 340px; border-radius: 14px; padding: 1.15em 2em 1.15em 2em; } }
     @media (max-width: 900px) { .main-center-area { margin-top: 20px; } }
@@ -343,6 +357,9 @@
     <div class="otp-popup">
       <button class="close-otp-popup" onclick="closeOtpPopup()" title="Cancel">&times;</button>
       <h3>Enter OTP sent to your Email</h3>
+      <div style="font-size:0.97em;color:#555;margin-bottom:0.5em;text-align:center;">
+        <span>Didn't receive the OTP? Please check your <b>Spam</b> or <b>Junk</b> folder.</span>
+      </div>
       <div id="otpError" class="otp-error"></div>
       <input type="text" maxlength="6" id="otpInput" placeholder="6-digit OTP" inputmode="numeric" autofocus>
       <button type="button" onclick="submitOtp()">Verify OTP</button>
@@ -452,7 +469,7 @@
       });
   }
   // --- SIGNUP LOGIC ---
-  const scriptURL = "https://script.google.com/macros/s/AKfycbzWSkVv8Zrj9KAyad8RfeWTyza1ny_JemjUIi3hB1MzV7UCNPaRxxYsREpFH5aAHszs/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbyGhGaVwaazi0x4qOwQfJazEKfkyIf4s2A0bcUZuZLadVuvmdgKtbIoR2me6kZq6gqq/exec";
   document.getElementById('signupForm').onsubmit = async (e) => {
     e.preventDefault();
     showError('');
