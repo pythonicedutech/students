@@ -182,6 +182,16 @@
       box-shadow: var(--shadow); 
       padding: 2em 2.2em;
     }
+    .note {
+      background: #eef6ff;
+      color: #1e40af;
+      border-left: 5px solid var(--accent);
+      border-radius: 7px;
+      margin-bottom: 1.3em;
+      padding: 1em 1.2em;
+      font-size: 1.05em;
+      box-shadow: 0 1px 6px #537fe715;
+    }
     h2 { color: var(--primary); margin-bottom: 1em; text-align: center; }
     .section-title { color: var(--accent); font-weight: 700; margin-top: 1.8em; margin-bottom: 0.7em; font-size: 1.1em;}
     .assignment-card {
@@ -418,6 +428,9 @@
   <div class="header-spacer"></div>
   <div class="container">
     <h2>Your Assignments</h2>
+    <div class="note">
+      <b>Note:</b> Upload your assignment to Google Drive and then create an <b>Anyone with the link</b> shareable link. Paste that link here for your assignment submission.
+    </div>
     <div class="section-title">Pending Assignments</div>
     <div id="assignmentsList"></div>
     <button class="toggle-btn" id="toggleCompleted"><i class='bx bx-chevron-down'></i> Show Completed Assignments</button>
@@ -455,7 +468,6 @@
     if (!localStorage.getItem('username')) {
       window.location.href = "index.html";
     }
-
     // Hamburger Menu Logic (unchanged)
     (function(){
       const path = window.location.pathname;
