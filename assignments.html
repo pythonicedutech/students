@@ -451,6 +451,11 @@
     <img src="loader.gif" alt="Loading..." class="loader-img">
   </div>
   <script>
+    // Redirect to login if not logged in
+    if (!localStorage.getItem('username')) {
+      window.location.href = "index.html";
+    }
+
     // Hamburger Menu Logic (unchanged)
     (function(){
       const path = window.location.pathname;
